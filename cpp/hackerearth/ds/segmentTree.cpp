@@ -21,7 +21,7 @@ void buildsegtree(vi &tree, vi &v, ll treeidx, ll l, ll r)
   }
   else
   {
-    ll mid = (r + l) / 2;
+    ll mid = l + ((r - l) / 2);
     buildsegtree(tree, v, 2 * treeidx, l, mid);
     buildsegtree(tree, v, 2 * treeidx + 1, mid + 1, r);
     tree[treeidx] = tree[2 * treeidx] + tree[2 * treeidx + 1];
@@ -37,7 +37,7 @@ void updatesegtree(vi &tree, vi &v, ll treeidx, ll l, ll r, ll vidx, ll incdata)
   }
   else
   {
-    ll mid = (l + r) / 2;
+    ll mid = l + ((r - l) / 2);
     if (l <= vidx && vidx <= mid)
     {
       updatesegtree(tree, v, 2 * treeidx, l, mid, vidx, incdata);
@@ -60,7 +60,7 @@ ll querytree(vi &tree, ll treeidx, ll l, ll r, ll qstart, ll qend)
   {
     return tree[treeidx];
   }
-  ll mid = (l + r) / 2;
+  ll mid = l + ((r - l) / 2);
   ll p1 = querytree(tree, 2LL * treeidx, l, mid, qstart, qend);
   ll p2 = querytree(tree, 2 * treeidx + 1, mid + 1, r, qstart, qend);
   return p1 + p2;
@@ -68,20 +68,18 @@ ll querytree(vi &tree, ll treeidx, ll l, ll r, ll qstart, ll qend)
 
 int main()
 {
-  vi v = {1, 3, 5, 7, 9, 11};
-  vi tree(2 * sz(v), 0LL);
+  vi v = {1, 30, 50, 700, 1000, 5000};
+  vi tree(4 * sz(v), 0LL);
   tree[0] = -1;
   // tree, origin array, tree head index, array start, array end;
   buildsegtree(tree, v, 1LL, 0, sz(v) - 1);
   // tree, origin array, tree head index, array start, array end, update arr index, value to increment;
   // tree, tree head index, tree head range -start and end, query left and query right.
   ll sum = querytree(tree, 1, 0, sz(v) - 1, 1, 3);
-  cout << endl
-       << " sum: " << sum;
-  updatesegtree(tree, v, 1, 0, (sz(v) - 1), 1, 7);
+  cout << "Sum: " << sum << endl;
+  // updatesegtree(tree, v, 1, 0, (sz(v) - 1), 1, 7);
   sum = querytree(tree, 1, 0, (sz(v) - 1), 1, 3);
-  cout << endl
-       << " sum: " << sum;
+  cout << "sum: " << sum << endl;
   for (auto x : tree)
     cout << " " << x;
   return 0;

@@ -45,26 +45,16 @@ using namespace std;
 
 #define fast_io() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
-// ll tc, n, m, k, i, j, ans = 0, c = 0;
+// ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
 
 
 
 int main() {
   fast_io();
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

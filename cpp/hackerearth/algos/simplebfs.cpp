@@ -45,39 +45,62 @@ using namespace std;
 
 #define fast_io() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
-ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
+ll tc, n, m, k, i, j, x, y, a, b, u, v, ans = 0, c = 0;
 
 // graph starts with node 1 <= x <= n;
 vvll adjgraph;
-vector<ll> color; // 0-unvisited. 1-visited. 2 exited;
-vll pre, post;
+vector<bool> visited;
+// map<ll, ll> visited;
+vll dist, btpath;
 queue<ll> q;
-ll dfs_timer = 0;
-
-void dfs(ll v)
-{
-  pre[v] = dfs_timer++;
-  color[v] = 1;
-  for (auto u : adjgraph[v])
-  {
-    if(color[u] == 0) {
-      dfs(u);
-    }
-  }
-  post[v] = dfs_timer++;
-  color[v] = 2;
-}
 
 int main() {
   fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
+  ll edges;
+  cin >> n >> edges;
+  adjgraph.resize(n + 1);
+  visited.resize(n + 1, false);
+  dist.resize(n + 1, 0);
+  btpath.resize(n + 1, -1);
+  foii(i, 1, edges) {
+    cin >> u>>v;
+    adjgraph[u].pb(v);
+    adjgraph[v].pb(u);
+  }
+  //start from source;
+  ll source;
+  cin >> source;
+  q.p(source);
+  visited[source] = true;
+  dist[source] = 0;
+  btpath[source] = 0;
+  while (!q.empty())
+  {
+    u = q.front();
+    q.pop();
+    for(auto v:adjgraph[u]) {
+      if(!visited[v]) {
+        visited[v] = true;
+        q.p(v);
+        dist[v] = dist[u] + 1;
+        btpath[v] = u;
+      }
+    }
+  }
+  // cout << "levels endl";
+  // foii(i, 1, n)
+  // {
+  //   cout << i << " " << dist[i] << endl;
+  // }
+  //   cout << "path endl";
+  // foii(i, 1, n)
+  // {
+  //   cout << i << " " << btpath[i] << endl;
+  // }
+
   return 0;
 }
-
-
-
-
-
-
-
+// input;
+// n edges
+// 'edges' lines of graph input eg: 1 3 // edge between 3 and 1.
+// source;

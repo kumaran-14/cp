@@ -7,7 +7,7 @@ using namespace std;
 #define p push
 #define mp make_pair
 #define pb push_back
-#define foi(i, a, n) for ( i = (a); i < (n); ++i)
+#define foi(i, a, n) for (i = (a); i < (n); ++i)
 #define foii(i, a, n) for (i = (a); i <= (n); ++i)
 #define fod(i, a, n) for (i = (a); i > (n); --i)
 #define fodd(i, a, n) for (i = (a); i >= (n); --i)
@@ -20,7 +20,7 @@ using namespace std;
 #define PI 3.141592653589793238L
 #define MOD 1000000007LL
 #define EPS 1e-13
-#define INFI 1000000000 // 10^9
+#define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
 
 #define l long int
@@ -31,7 +31,7 @@ using namespace std;
 #define vs vector<string>
 #define vc vector<char>
 #define vll vector<long long>
-#define vvi vector<vector <int>>
+#define vvi vector<vector<int>>
 #define vvll vector<vll>
 //vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns.
 // Initialization value is 500.
@@ -43,7 +43,10 @@ using namespace std;
 #define pcc pair<char, char>
 #define pdd pair<double, double>
 
-#define fast_io() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define fast_io()                   \
+  ios_base::sync_with_stdio(false); \
+  cin.tie(NULL);                    \
+  cout.tie(NULL);
 
 ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
 
@@ -68,16 +71,23 @@ void dfs(ll v)
   color[v] = 2;
 }
 
-int main() {
+int main()
+{
   fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
+  ll edges;
+  cin >> n >> edges;
+  adjgraph.resize(n + 1);
+  color.resize(n + 1, 0);
+  pre.resize(n + 1, 0);
+  post.resize(n + 1, -1);
+  ll source, u, v;
+  cin >> source;
+  foii(i, 1, edges)
+  {
+    cin >> u >> v;
+    adjgraph[u].pb(v);
+    adjgraph[v].pb(u);
+  }
+  dfs(source);
   return 0;
 }
-
-
-
-
-
-
-

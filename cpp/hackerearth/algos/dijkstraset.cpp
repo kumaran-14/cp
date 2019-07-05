@@ -48,60 +48,62 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-// ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
-ll tc, n;
-// fentree starts from index 1.
-vll fentree(100001, 0);
-// arr also starts from index 1;
-vll arr(100001, 0);
+ll tc, n, m, k;
+ll i, j;
+// ll ans = 0, c = 0;
+// ll a, b;
+// ll x, y;
+vector<vector<pll>> adjgraph(100005);
+vll dist(100005, INFLL);
+vll parent(100005, -1);
+vector<bool> visited(100005, false);
 
-void updatetree(ll i, ll val)
+void dijkstra(ll source)
 {
-  for (; i <= n; i += i & (-i))
+  dist.assign(n+1, INFLL);
+  parent.assign(n+1, -1);
+
+  dist[source] = 0;
+  //pll => {dist, vertex}
+  set<pll> q;
+  //optimization: we dont need to store pair, only vertex. Overload with custom comparator for set which compares based on dist.
+  q.insert({0, source});
+  while (!q.empty())
   {
-    fentree[i] += val;
+    ll v = q.begin()->s;
+    q.erase(q.begin());
+
+    for (auto edge : adjgraph[v])
+    {
+      ll next = edge.f;
+      ll cost = edge.s;
+
+      if (dist[v] + cost < dist[next])
+      {
+        q.erase({dist[next], next});
+        dist[next] = dist[v] + cost;
+        parent[next] = v;
+        q.insert({dist[next], next});
+      }
+    }
   }
 }
 
-ll querytree(ll i)
-{
-  ll sum = 0;
-  for (; i > 0; i -= i & (-i))
-  {
-    sum += fentree[i];
-  }
-  return sum;
+vll restore_path(ll source, ll dest) {
+    vll path;
+    for(ll v = dest; v != source; source = parent[v]) {
+      path.pb(v);
+    }
+    path.pb(source);
+    reverse(all(path));
+    return path;
 }
 
 int main()
 {
   fast_io();
-  fentree[0] = -1;
-  arr[0] = -1;
-  // both not part of array;
-  n = 6;
-  arr[1] = 1;
-  arr[2] = 30;
-  //4th element
-  arr[3] = 50;
-  arr[4] = 700;
-  arr[5] = 1000;
-  arr[6] = 5000;
-  ll i;
-  foii(i, 1, n)
-  {
-    updatetree(i, arr[i]);
-  }
-  // query 2nd to 5th element. [2, 5]
-  ll ans = querytree(5) - querytree(1);
-  cout << ans;
-  //increase last element by 4000;
-  updatetree(n, 4000);
-  cout << endl;
-  cout << querytree(n) - querytree(n - 1);
-  // freopen("./input.txt", "r", stdin);
-  // freopen("./output.txt", "w", stdout);
-
-  // note the BIT tree size : 100001;
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
+  n = 100000;
   return 0;
 }

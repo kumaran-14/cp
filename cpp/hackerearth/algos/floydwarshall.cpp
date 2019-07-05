@@ -48,60 +48,43 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-// ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
-ll tc, n;
-// fentree starts from index 1.
-vll fentree(100001, 0);
-// arr also starts from index 1;
-vll arr(100001, 0);
+ll tc, n, m, k;
+// ll ans = 0, c = 0;
+ll i, j;
+// ll a, b;
+// ll x, y;
 
-void updatetree(ll i, ll val)
-{
-  for (; i <= n; i += i & (-i))
-  {
-    fentree[i] += val;
+// 2d graph adj matrix. dist[i][j] is integer or INFLL, denoting path dist, or no path.
+vvll dist(n + 1, vll(n + 1, INFLL));
+vvll path(n + 1, vll(n + 1, n));
+
+void floydwarshall() {
+  foii(i, 1, n) {
+    dist[i][i] = 0;
+    foii(j, 1, n) {
+      path[i][j] = i;
+    }
   }
+  foii(k, 1, n) {
+    foii(i, 1, n) {
+      foii(j, 1, n) {
+        //negative edge
+        if(dist[i][j] < INFLL && dist[k][j] < INFLL) {
+          dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+          path[i][j] = path[k][j];
+        }
+      }
+    }
+  }
+
 }
 
-ll querytree(ll i)
-{
-  ll sum = 0;
-  for (; i > 0; i -= i & (-i))
-  {
-    sum += fentree[i];
-  }
-  return sum;
-}
 
 int main()
 {
   fast_io();
-  fentree[0] = -1;
-  arr[0] = -1;
-  // both not part of array;
-  n = 6;
-  arr[1] = 1;
-  arr[2] = 30;
-  //4th element
-  arr[3] = 50;
-  arr[4] = 700;
-  arr[5] = 1000;
-  arr[6] = 5000;
-  ll i;
-  foii(i, 1, n)
-  {
-    updatetree(i, arr[i]);
-  }
-  // query 2nd to 5th element. [2, 5]
-  ll ans = querytree(5) - querytree(1);
-  cout << ans;
-  //increase last element by 4000;
-  updatetree(n, 4000);
-  cout << endl;
-  cout << querytree(n) - querytree(n - 1);
-  // freopen("./input.txt", "r", stdin);
-  // freopen("./output.txt", "w", stdout);
-
-  // note the BIT tree size : 100001;
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
+  n = 100;
   return 0;
 }

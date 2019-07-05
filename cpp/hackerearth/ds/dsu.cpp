@@ -49,59 +49,74 @@ using namespace std;
   cout.tie(NULL);
 
 // ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
-ll tc, n;
-// fentree starts from index 1.
-vll fentree(100001, 0);
-// arr also starts from index 1;
-vll arr(100001, 0);
+vll setparent(100005, 0);
+vll setrank(100005, -1);
+vll setsize(100005, 0);
 
-void updatetree(ll i, ll val)
+void makeset(ll v)
 {
-  for (; i <= n; i += i & (-i))
+  setparent[v] = v;
+  // setsize[v] = 0;
+  setrank[v] = 0;
+}
+
+//path compression.
+ll findset(ll v)
+{
+  if (setparent[v] == v)
   {
-    fentree[i] += val;
+    return v;
+  }
+  return setparent[v] = findset(setparent[v]);
+}
+
+//union by rank. (depth of trees)
+void unionsets_rank(ll a, ll b)
+{
+  a = findset(a);
+  b = findset(a);
+  if (a != b)
+  {
+    if (setrank[a] < setrank[b])
+    {
+      swap(a, b);
+    }
+    setparent[b] = a;
+    if (setrank[a] == setrank[b])
+    {
+      setrank[a]++;
+    }
   }
 }
 
-ll querytree(ll i)
+void unionsets_size(ll a, ll b)
 {
-  ll sum = 0;
-  for (; i > 0; i -= i & (-i))
+  a = findset(a);
+  b = findset(b);
+  if (a != b)
   {
-    sum += fentree[i];
+    if (setsize[a] < setsize[b])
+    {
+      swap(a, b);
+    }
+    setparent[b] = a;
+    setsize[a] += setsize[b];
   }
-  return sum;
 }
 
 int main()
 {
   fast_io();
-  fentree[0] = -1;
-  arr[0] = -1;
-  // both not part of array;
-  n = 6;
-  arr[1] = 1;
-  arr[2] = 30;
-  //4th element
-  arr[3] = 50;
-  arr[4] = 700;
-  arr[5] = 1000;
-  arr[6] = 5000;
-  ll i;
-  foii(i, 1, n)
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
+  unordered_map<ll, ll> um;
+  ll i, j, u, v, n, m;
+  foii(j, 1, n)
   {
-    updatetree(i, arr[i]);
+    if (um.find(findset(j)) == um.end())
+    {
+      um[findset(j)] = setsize[findset(j)];
+    }
   }
-  // query 2nd to 5th element. [2, 5]
-  ll ans = querytree(5) - querytree(1);
-  cout << ans;
-  //increase last element by 4000;
-  updatetree(n, 4000);
-  cout << endl;
-  cout << querytree(n) - querytree(n - 1);
-  // freopen("./input.txt", "r", stdin);
-  // freopen("./output.txt", "w", stdout);
-
-  // note the BIT tree size : 100001;
   return 0;
 }

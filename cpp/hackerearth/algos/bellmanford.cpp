@@ -48,60 +48,76 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-// ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
-ll tc, n;
-// fentree starts from index 1.
-vll fentree(100001, 0);
-// arr also starts from index 1;
-vll arr(100001, 0);
+ll tc, n, m, k;
+// ll ans = 0, c = 0;
+ll i, j;
+// ll a, b;
+// ll x, y;
 
-void updatetree(ll i, ll val)
+struct edge
 {
-  for (; i <= n; i += i & (-i))
+  // a , b are vectices. 1 <= a, b <= n
+  ll a, b, cost;
+};
+
+// edgelist indexed from 0.
+vector<edge> edgelist;
+vll dist(100005, INFLL);
+vll parent(100005, -1);
+
+//single source shortest path
+void bellmanford(ll source)
+{
+  dist.assign(n + 1, INFLL);
+  parent.assign(n + 1, -1);
+  dist[source] = 0;
+  // until relaxation takes place for atleast one edge
+  for (;;)
   {
-    fentree[i] += val;
+    bool isrelaxed = false;
+    foi(i, 0, m)
+    {
+      auto curr = edgelist[i].a;
+      auto next = edgelist[i].b;
+      auto cost = edgelist[i].cost;
+      if (dist[curr] < INFLL)
+      {
+        if (dist[next] > dist[curr] + cost)
+        {
+          dist[next] = dist[curr] + cost;
+          parent[next] = curr;
+          isrelaxed = true;
+        }
+      }
+    }
+    if(!isrelaxed) {
+      break;
+    }
   }
 }
 
-ll querytree(ll i)
-{
-  ll sum = 0;
-  for (; i > 0; i -= i & (-i))
-  {
-    sum += fentree[i];
-  }
-  return sum;
+vll restore_path(ll source, ll dest) {
+    vll path;
+    if(dist[dest] == INFLL) {
+      // no path.
+      return path;
+    }
+    for(ll v = dest; v != source; source = parent[v]) {
+      path.pb(v);
+    }
+    path.pb(source);
+    reverse(all(path));
+    return path;
 }
 
 int main()
 {
   fast_io();
-  fentree[0] = -1;
-  arr[0] = -1;
-  // both not part of array;
-  n = 6;
-  arr[1] = 1;
-  arr[2] = 30;
-  //4th element
-  arr[3] = 50;
-  arr[4] = 700;
-  arr[5] = 1000;
-  arr[6] = 5000;
-  ll i;
-  foii(i, 1, n)
-  {
-    updatetree(i, arr[i]);
-  }
-  // query 2nd to 5th element. [2, 5]
-  ll ans = querytree(5) - querytree(1);
-  cout << ans;
-  //increase last element by 4000;
-  updatetree(n, 4000);
-  cout << endl;
-  cout << querytree(n) - querytree(n - 1);
-  // freopen("./input.txt", "r", stdin);
-  // freopen("./output.txt", "w", stdout);
-
-  // note the BIT tree size : 100001;
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
+  //vertices
+  n = 1000;
+  //edges;
+  m = 100;
   return 0;
 }

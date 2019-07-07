@@ -49,64 +49,45 @@ using namespace std;
   cout.tie(NULL);
 
 ll tc, n, m, k;
+ll i, j;
 // ll ans = 0, c = 0;
-// ll i, j;
 // ll a, b;
 // ll x, y;
 
-//vectors are indexed from 1;
-vll setparent(100005, 0);
-vll setrank(100005, -1);
-vll setsize(100005, 0);
+// vector<vector<pll>> adjgraph(100005);
+// vll dist(100005, INFLL);
+vvll adjmat(1005, vll(1005, 0));
+vvll dist(1005, vll(1005, INFLL));
+vll rows = {0, 0, 1, -1};
+vll cols = {1, -1, 0, 0};
 
-void makeset(ll v)
+void dijkstra(ll x, ll y)
 {
-  setparent[v] = v;
-  // setsize[v] = 0;
-  setrank[v] = 0;
-}
-
-//path compression.
-ll findset(ll v)
-{
-  if (setparent[v] == v)
+  dist[x][y] = 0;
+  //pll => {dist, {x, y}}
+  set<pair<ll, pll>> q;
+  //optimization: we dont need to store pair, only vertex. Overload with custom comparator for set which compares based on dist.
+  q.insert({0, {x, y}});
+  while (!q.empty())
   {
-    return v;
-  }
-  return setparent[v] = findset(setparent[v]);
-}
-
-//union by rank. (depth of trees)
-void unionsets_rank(ll a, ll b)
-{
-  a = findset(a);
-  b = findset(b);
-  if (a != b)
-  {
-    if (setrank[a] < setrank[b])
+    pll v = q.begin()->s;
+    q.erase(q.begin());
+    ll curri = v.f;
+    ll currj = v.s;
+    foi(k, 0, 4)
     {
-      swap(a, b);
+      ll nexti = curri + rows[k];
+      ll nextj = currj + cols[k];
+      if (nexti >= 1 && nexti <= n && nextj >= 1 && nextj <= m && adjmat[nexti][nextj])
+      {
+        if (dist[curri][currj] + 1 < dist[nexti][nextj])
+        {
+          q.erase({dist[nexti][nextj], {nexti, nextj}});
+          dist[nexti][nextj] = dist[curri][currj] + 1;
+          q.insert({dist[nexti][nextj], {nexti, nextj}});
+        }
+      }
     }
-    setparent[b] = a;
-    if (setrank[a] == setrank[b])
-    {
-      setrank[a]++;
-    }
-  }
-}
-
-void unionsets_size(ll a, ll b)
-{
-  a = findset(a);
-  b = findset(b);
-  if (a != b)
-  {
-    if (setsize[a] < setsize[b])
-    {
-      swap(a, b);
-    }
-    setparent[b] = a;
-    setsize[a] += setsize[b];
   }
 }
 
@@ -115,14 +96,8 @@ int main()
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  unordered_map<ll, ll> um;
-  ll i, j, u, v, n, m;
-  foii(j, 1, n)
-  {
-    if (um.find(findset(j)) == um.end())
-    {
-      um[findset(j)] = setsize[findset(j)];
-    }
-  }
+  //2d matrix. so n should be reasonable
+  n = 1005;
+
   return 0;
 }

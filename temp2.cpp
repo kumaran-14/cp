@@ -131,8 +131,8 @@ bool customcomp(pll& p1, pll& p2) {
 int main()
 {
   fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
+  // freopen("./input.txt", "r", stdin);
+  // freopen("./output.txt", "w", stdout);
   n = 100001;
   cin>>n>>m;
   foi(i, 0, m) {

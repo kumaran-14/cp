@@ -9,146 +9,148 @@ using namespace std;
 #define pb push_back
 #define foi(i, a, n) for (i = (a); i < (n); ++i)
 #define foii(i, a, n) for (i = (a); i <= (n); ++i)
+#define fod(i, a, n) for (i = (a); i > (n); --i)
+#define fodd(i, a, n) for (i = (a); i >= (n); --i)
+#define debug(x) cout << '>' << #x << ':' << x << endl;
+#define all(v) v.begin(), v.end()
 #define sz(x) ((int)(x).size())
+#define endl "\n"
+#define MOD 1000000007LL
+#define EPS 1e-13
+#define INFI 1000000000             // 10^9
+#define INFLL 1000000000000000000ll //10^18
 
-#define ll long long
+#define l long int
+#define d double
+#define ll long long int
+#define ld long double
 #define vi vector<int>
-#define vs vector<string>
-#define vc vector<char>
 #define vll vector<long long>
 #define vvi vector<vector<int>>
 #define vvll vector<vll>
-//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns.
-// Initialization value is 500.
-#define si set<int>
+//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns, with value 500.
 #define mii map<int, int>
 #define mll map<long long, long long>
 #define pii pair<int, int>
 #define pll pair<long long, long long>
-#define pcc pair<char, char>
-#define pdd pair<double, double>
 
 #define fast_io()                   \
   ios_base::sync_with_stdio(false); \
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
+ll tc, n, m, k;
+// ll ans = 0, c = 0;
+ll i, j;
+// ll a, b;
+// ll x, y;
 
-void build(vll &t, vll &arr, ll v, ll tl, ll tr)
-{
-  if (tl == tr)
-  {
-    t[v] = arr[tl];
-  }
-  else
-  {
-    ll tm = (tl + tr) / 2;
-    build(t, arr, v * 2, tl, tm);
-    build(t, arr, v * 2 + 1, tm + 1, tr);
-    t[v] = max(t[v * 2], t[v * 2 + 1]);
+// indexed from 1;
+// undirected graph.
+#define NIL -1
+ll timer;
+vvll adjgraph(100005);
+vll entrytime(100005, -1);
+vll low(100005, -1);
+vector<bool> visited(100005, false);
+set<ll> cutpoints;
+vector<pll> cutedges; 
+
+
+//handle found cutpoint;
+void iscutpoint(ll v) {
+  if(cutpoints.find(v) == cutpoints.end()) {
+    cutpoints.insert(v);
   }
 }
 
-ll getmax(vll &t, ll v, ll tl, ll tr, ll l, ll r)
-{
-  if (l > r)
-    return 0;
-  if (l == tl && r == tr)
-  {
-    return t[v];
-  }
-  ll tm = (tl + tr) / 2;
-  return max(getmax(t, v * 2, tl, tm, l, min(r, tm)), getmax(t, v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
+void isbridge(ll v, ll to) {
+  cutedges.pb({v, to});
 }
 
-void update(vll& t, ll v, ll tl, ll tr, ll pos, ll new_val)
-{
-  if (tl == tr)
-  {
-    t[v] = 0;
+
+//finding cutpoint.
+// three cases:
+/*
+  to=parent - the edge leads back to parent in DFS tree.
+  visited[to]=true && to≠parent - the edge is back edge to one of the ancestors;
+  visited[to]=false - the edge is part of DFS tree;
+*/
+void dfs(ll v, ll parent = NIL) {
+  visited[v] = true;
+  entrytime[v] = low[v] = timer++;
+  ll children = 0;
+  for(auto to:adjgraph[v]) {
+    if (to == parent) continue;
+    if(visited[to]) {
+      low[v] = min(low[v], entrytime[to]);
+    } else {
+      dfs(to, v);
+      low[v] = min(low[v], low[to]);
+      // low[to] = entrytime[v] => means backedge from 'to' --> 'v'.
+      // low[to] < entrytime[v] => means backedge from 'to' --> some ancestor of 'v'
+      if((low[to] >= entrytime[v] && parent != NIL)) {
+        //cutpoint found;
+        iscutpoint(v);
+      }
+      if(low[to] > entrytime[v]) {
+        //bridge found;
+        isbridge(v, to);
+      }
+      ++children;
+    }
   }
-  else
-  {
-    ll tm = (tl + tr) / 2;
-    if (pos <= tm)
-      update(t, v * 2, tl, tm, pos, 0);
-    else
-      update(t, v * 2 + 1, tm + 1, tr, pos, 0);
-    t[v] = max(t[v * 2], t[v * 2 + 1]);
+  // hande root node case
+  if(parent == NIL && children > 1) {
+    iscutpoint(v);
   }
 }
+
+
+
+
+void find_cutpoints() {
+  ll timer = 0;
+  visited.assign(n+1, false);
+  entrytime.assign(n+1, NIL);
+  low.assign(n+1, NIL);
+  foii(i, 1, n) {
+    //dfs for each cc in undirected graph.
+    if(!visited[i]) {
+      dfs(i);
+    }
+  }
+}
+
+bool customcomp(pll& p1, pll& p2) {
+  if(p1.f == p2.f) return p1.s < p2.s;
+  else return p1.f < p2.f;
+}
+
 
 int main()
 {
   fast_io();
-  ll tc, n, m, k, i, j, x, y, a, b, q, ans = 0, c = 0;
-  cin >> tc;
-  while (tc--)
-  {
-    ans = 0;
-    cin >> n >> q;
-    vll v;
-    foii(i, 1, n)
-    {
-      v.pb(i);
-    }
-    vll tree(4 * sz(v), 0LL);
-    // tree[0] = -1;
-    // tree, origin array, tree head index, array start, array end;
-    build(tree, v, 1, 0, n-1);
-    // for (auto x : tree)
-    // {
-    //   cout << x << " ";
-    // }
-    // cout << endl;
-    // for (auto x : v)
-    // {
-    //   cout << x << " ";
-    // }
-    // cout << endl;
-    while (q--)
-    {
-      cin >> k;
-      if (k == 1)
-      {
-        // type 1 query;
-        cin >> y;
-        // cout << y << endl;
-        y += ans;
-        // tree, origin array, tree head index, array start, array end, update arr index, value to increment;
-        update(tree, 1, 0, n-1, y-1, 0);
-        // for (auto x : tree)
-        // {
-        //   cout << x << " ";
-        // }
-        // cout << endl;
-        // for (auto x : v)
-        // {
-        //   cout << x << " ";
-        // }
-        // cout << endl;
-      }
-      else
-      {
-        //type 2 query;
-        cin >> a >> b;
-        // cout << a<<b << endl;
-        a += ans;
-        b += ans;
-        // tree, tree head index, tree head range -start and end, query left and query right.
-        c = getmax(tree, 1, 0, n-1, a-1, b-1);
-        ans = ((ans + c) % n);
-        cout << c << "\n";
-      }
-    }
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
+  n = 100001;
+  cin>>n>>m;
+  foi(i, 0, m) {
+    ll u, v;
+    cin>>u>>v;
+    adjgraph[u+1].pb(v+1);
+    adjgraph[v+1].pb(u+1);
+  }
+  find_cutpoints();
+  cout<<sz(cutpoints)<<endl;
+  for(auto x: cutpoints) {
+    cout<<x-1<<" ";
+  }
+  cout<<endl;
+  sort(all(cutedges), customcomp);
+  cout<<sz(cutedges)<<endl;
+  for(auto x:cutedges) {
+    cout<<x.f-1<<" "<<x.s-1<<endl;
   }
   return 0;
 }
-/*
-1
-7 3
-2 2 5
-1 0
-2 -3 0
-*/

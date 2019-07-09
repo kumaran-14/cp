@@ -57,6 +57,7 @@ vector<bool> visited(100005, false);
 
 //handle found cutpoint;
 void iscutpoint(ll v) {
+  //same point can repeat multiple times.
   cout<<"{"<<v<<"}"<<" ";
 }
 

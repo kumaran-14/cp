@@ -48,14 +48,7 @@ ll tc, n, m, k;
 int main()
 {
   fast_io();
-  // freopen("./input.txt", "r", stdin);
-  // freopen("./output.txt", "w", stdout);
-  cin >> n;
-  m = n - 1;
-  while (__gcd(n, m) != 1)
-  {
-    m--;
-  }
-  cout << m;
+  freopen("./input.txt", "r", stdin);
+  freopen("./output.txt", "w", stdout);
   return 0;
 }

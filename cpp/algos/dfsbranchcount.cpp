@@ -44,99 +44,107 @@ using namespace std;
 #define pcc pair<char, char>
 #define pdd pair<double, double>
 
-#define fast_io()                                                              \
-  ios_base::sync_with_stdio(false);                                            \
-  cin.tie(NULL);                                                               \
+#define fast_io()                   \
+  ios_base::sync_with_stdio(false); \
+  cin.tie(NULL);                    \
   cout.tie(NULL);
 
 ll cans;
 ll tc, n, m, i, j, k;
 pll start, dest;
 
-bool isoutofbounds(pll pos) {
-  if(pos.f <0 || pos.s < 0 || pos.f >=n || pos.s >=m)
+bool isoutofbounds(pll pos)
+{
+  if (pos.f < 0 || pos.s < 0 || pos.f >= n || pos.s >= m)
     return true;
   return false;
 }
 
-int choices(pll pos, vector<vector<char>>& graph, map<pll, bool>& path) {
+int choices(pll pos, vector<vector<char>> &graph, map<pll, bool> &path)
+{
   int interim = 0;
   ll i, j;
   i = pos.f;
   j = pos.s;
 
-  if (!isoutofbounds(mp(i-1,j)) &&  graph[i - 1][j] == '.' && !path[mp(i-1, j)] && !(i-1 == dest.f && j == dest.s))
+  if (!isoutofbounds(mp(i - 1, j)) && graph[i - 1][j] == '.' && !path[mp(i - 1, j)] && !(i - 1 == dest.f && j == dest.s))
     interim++;
-  if (!isoutofbounds(mp(i,j+1)) &&  graph[i][j+1] == '.' && !path[mp(i, j+1)]&& !(i== dest.f && j+1 == dest.s))
+  if (!isoutofbounds(mp(i, j + 1)) && graph[i][j + 1] == '.' && !path[mp(i, j + 1)] && !(i == dest.f && j + 1 == dest.s))
     interim++;
-  if (!isoutofbounds(mp(i+1,j)) &&  graph[i+1][j] == '.' && !path[mp(i+1, j)] && !(i+1 == dest.f && j == dest.s))
+  if (!isoutofbounds(mp(i + 1, j)) && graph[i + 1][j] == '.' && !path[mp(i + 1, j)] && !(i + 1 == dest.f && j == dest.s))
     interim++;
-  if (!isoutofbounds(mp(i,j-1)) &&  graph[i][j-1] == '.' && !path[mp(i, j-1)]&& !(i == dest.f && j-1 == dest.s))
+  if (!isoutofbounds(mp(i, j - 1)) && graph[i][j - 1] == '.' && !path[mp(i, j - 1)] && !(i == dest.f && j - 1 == dest.s))
     interim++;
   return interim;
 }
 
-bool dfs(vector<vector<char>>& graph, map<pll, bool>& path, pll& start) {
-  if(isoutofbounds(start))
+bool dfs(vector<vector<char>> &graph, map<pll, bool> &path, pll &start)
+{
+  if (isoutofbounds(start))
     return false;
-  if(start.f == dest.f && start.s == dest.s) {
+  if (start.f == dest.f && start.s == dest.s)
+  {
     return true;
   }
   ll i, j;
   i = start.f;
   j = start.s;
-  if(graph[i][j] != '.' || path.find(mp(i, j)) != path.end() )
+  if (graph[i][j] != '.' || path.find(mp(i, j)) != path.end())
     return false;
   path[mp(i, j)] = true;
-  pll north = mp(i-1, j);
-  pll east = mp(i, j+1);
-  pll south = mp(i+1, j);
-  pll west = mp(i, j-1);
+  pll north = mp(i - 1, j);
+  pll east = mp(i, j + 1);
+  pll south = mp(i + 1, j);
+  pll west = mp(i, j - 1);
   ll found = 0;
   if (dfs(graph, path, west))
   {
     return true;
     found = 1;
   }
-  if(dfs(graph, path, east))
-     {
+  if (dfs(graph, path, east))
+  {
     return true;
     found = 1;
   }
-  if(dfs(graph, path, south))
-     {
+  if (dfs(graph, path, south))
+  {
     return true;
     found = 1;
   }
   if (dfs(graph, path, north))
-     {
+  {
     return true;
     found = 1;
   }
-  if(found)
+  if (found)
     return true;
   path[mp(i, j)] = false;
   return false;
 }
 
-
-
-int main() {
+int main()
+{
   fast_io();
   cin >> tc;
-  while (tc--) {
+  while (tc--)
+  {
     cin >> n >> m;
     string str;
     vector<vector<char>> graph(n, vector<char>(m));
     map<pll, bool> path;
-    foi(i, 0, n) {
+    foi(i, 0, n)
+    {
       cin >> str;
-      foi(j, 0, m) {
-        if (str[j] == '*') {
+      foi(j, 0, m)
+      {
+        if (str[j] == '*')
+        {
           dest = mp(i, j);
           str[j] = '.';
         }
-        if (str[j] == 'M') {
+        if (str[j] == 'M')
+        {
           start = mp(i, j);
           str[j] = '.';
         }
@@ -147,9 +155,11 @@ int main() {
     cans = 0;
     bool res = false;
     res = dfs(graph, path, start);
-    for(auto x:path) {
-      if(x.s) {
-        if(choices(x.f, graph, path) > 0)
+    for (auto x : path)
+    {
+      if (x.s)
+      {
+        if (choices(x.f, graph, path) > 0)
           cans++;
       }
     }
@@ -157,7 +167,9 @@ int main() {
     if (cans == k)
     {
       cout << "Impressed" << endl;
-    } else {
+    }
+    else
+    {
       cout << "Oops!" << endl;
     }
   }

@@ -60,8 +60,8 @@ vector<bool> visited(100005, false);
 
 void dijkstra(ll source)
 {
-  dist.assign(n+1, INFLL);
-  parent.assign(n+1, -1);
+  dist.assign(n + 1, INFLL);
+  parent.assign(n + 1, -1);
 
   dist[source] = 0;
   //pll => {dist, vertex}
@@ -89,14 +89,16 @@ void dijkstra(ll source)
   }
 }
 
-vll restore_path(ll source, ll dest) {
-    vll path;
-    for(ll v = dest; v != source; source = parent[v]) {
-      path.pb(v);
-    }
-    path.pb(source);
-    reverse(all(path));
-    return path;
+vll restore_path(ll source, ll dest)
+{
+  vll path;
+  for (ll v = dest; v != source; source = parent[v])
+  {
+    path.pb(v);
+  }
+  path.pb(source);
+  reverse(all(path));
+  return path;
 }
 
 int main()

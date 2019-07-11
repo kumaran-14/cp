@@ -114,18 +114,20 @@ public:
     return 1 + max(height(root->left), height(root->right));
   }
 
-  int diameter(treeNode * head) {
-  if(head == nullptr) {
-    return 0;
+  int diameter(treeNode *head)
+  {
+    if (head == nullptr)
+    {
+      return 0;
+    }
+    int lh = height(head->left);
+    int rh = height(head->right);
+
+    int ldia = diameter(head->left);
+    int rdia = diameter(head->right);
+
+    return max(lh + rh + 1, max(ldia, rdia));
   }
-  int lh = height(head->left);
-  int rh = height(head->right);
-
-  int ldia = diameter(head->left);
-  int rdia = diameter(head->right);
-
-  return max(lh + rh + 1, max(ldia, rdia));
-}
 
   bool checkBST(treeNode *root, int min, int max)
   {

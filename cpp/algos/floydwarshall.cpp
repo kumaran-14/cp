@@ -58,27 +58,32 @@ ll i, j;
 vvll dist(n + 1, vll(n + 1, INFLL));
 vvll path(n + 1, vll(n + 1, n));
 
-void floydwarshall() {
-  foii(i, 1, n) {
+void floydwarshall()
+{
+  foii(i, 1, n)
+  {
     dist[i][i] = 0;
-    foii(j, 1, n) {
+    foii(j, 1, n)
+    {
       path[i][j] = i;
     }
   }
-  foii(k, 1, n) {
-    foii(i, 1, n) {
-      foii(j, 1, n) {
+  foii(k, 1, n)
+  {
+    foii(i, 1, n)
+    {
+      foii(j, 1, n)
+      {
         //negative edge
-        if(dist[i][j] < INFLL && dist[k][j] < INFLL) {
+        if (dist[i][j] < INFLL && dist[k][j] < INFLL)
+        {
           dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
           path[i][j] = path[k][j];
         }
       }
     }
   }
-
 }
-
 
 int main()
 {

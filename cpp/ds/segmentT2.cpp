@@ -145,7 +145,7 @@ int main()
   }
   cout << endl;
   //check if last element is updated;
-  sum = querytree(1LL, 0LL, n - 1, n-1, n-1); //last element in given arr;
+  sum = querytree(1LL, 0LL, n - 1, n - 1, n - 1); //last element in given arr;
 
   return 0;
 }

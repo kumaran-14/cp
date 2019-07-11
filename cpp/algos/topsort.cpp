@@ -42,9 +42,36 @@ using namespace std;
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
-// ll i, j;
+ll i, j;
 // ll a, b;
 // ll x, y;
+
+vvll adjgraph(100005); // adjacency list of graph
+vector<bool> visited;
+vll arr;
+
+void dfs(ll v)
+{
+  visited[v] = true;
+  for (ll u : adjgraph[v])
+  {
+    if (!visited[u])
+      dfs(u);
+  }
+  arr.pb(v);
+}
+
+void topological_sort()
+{
+  visited.assign(n, false);
+  arr.clear();
+  foi(i, 0, n)
+  {
+    if (!visited[i])
+      dfs(i);
+  }
+  reverse(all(arr));
+}
 
 int main()
 {

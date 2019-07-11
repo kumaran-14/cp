@@ -63,7 +63,8 @@ void dfs(ll v)
   color[v] = 1;
   for (auto u : adjgraph[v])
   {
-    if(color[u] == 0) {
+    if (color[u] == 0)
+    {
       dfs(u);
     }
   }

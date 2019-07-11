@@ -91,14 +91,16 @@ void dijkstra(ll source)
   }
 }
 
-vll restore_path(ll source, ll dest) {
-    vll path;
-    for(ll v = dest; v != source; source = parent[v]) {
-      path.pb(v);
-    }
-    path.pb(source);
-    reverse(all(path));
-    return path;
+vll restore_path(ll source, ll dest)
+{
+  vll path;
+  for (ll v = dest; v != source; source = parent[v])
+  {
+    path.pb(v);
+  }
+  path.pb(source);
+  reverse(all(path));
+  return path;
 }
 
 int main()

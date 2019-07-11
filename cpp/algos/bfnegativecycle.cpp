@@ -54,64 +54,78 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-struct edge
+struct Edge
 {
   // a , b are vectices. 1 <= a, b <= n
   ll a, b, cost;
 };
 
 // edgelist indexed from 0.
-vector<edge> edgelist;
+vector<Edge> edgelist;
 vll dist(100005, INFLL);
 vll parent(100005, -1);
+ll cycle_end;
+
+void printarr(vll arr)
+{
+  for (auto x : arr)
+    cout << x << " ";
+  cout << endl;
+}
+
+void findnegativecycle(ll x)
+{
+  foi(i, 0, n)
+  {
+    x = parent[x];
+  }
+  vll cyclearr;
+  for (ll v = x;; v = parent[v])
+  {
+    cyclearr.pb(v);
+    if (v == x && sz(cyclearr) > 1)
+      break;
+  }
+  reverse(all(cyclearr));
+  cout << "Negative cycle: ";
+  printarr(cyclearr);
+}
 
 //single source shortest path
 void bellmanford(ll source)
 {
+  // a negative cycle reachable from source,  then other vertex dist at starting is INFLL
   dist.assign(n + 1, INFLL);
+  // a negative cycle not reachable from source, or general case, find any negative cycle,  then other vertex dist at starting is 0.
+  // dist.assign(n + 1, 0);
   parent.assign(n + 1, -1);
   dist[source] = 0;
-  // until relaxation takes place for atleast one edge
-  for (;;)
+  // nth time is the time we check for negative cycle.
+  foi(i, 0, n)
   {
-    bool isrelaxed = false;
+    cycle_end = -1;
     for (auto edge : edgelist)
     {
       auto curr = edge.a;
       auto next = edge.b;
       auto cost = edge.cost;
-      if (dist[curr] < INFLL)
+      if (dist[next] > dist[curr] + cost)
       {
-        if (dist[next] > dist[curr] + cost)
-        {
-          dist[next] = dist[curr] + cost;
-          parent[next] = curr;
-          isrelaxed = true;
-        }
+        // for integer overflow
+        dist[next] = max(-INFLL, dist[curr] + cost);
+        parent[next] = curr;
+        cycle_end = next;
       }
     }
-    if (!isrelaxed)
-    {
-      break;
-    }
   }
-}
-
-vll restore_path(ll source, ll dest)
-{
-  vll path;
-  if (dist[dest] == INFLL)
+  if (cycle_end == -1)
   {
-    // no path.
-    return path;
+    cout << "No negative cycle" << endl;
   }
-  for (ll v = dest; v != source; source = parent[v])
+  else
   {
-    path.pb(v);
+    findnegativecycle(cycle_end);
   }
-  path.pb(source);
-  reverse(all(path));
-  return path;
 }
 
 int main()
@@ -123,5 +137,19 @@ int main()
   n = 1000;
   //edges;
   m = 100;
+  cin >> n >> m;
+  foi(i, 0, m)
+  {
+    ll u, v, cost;
+    cin >> u >> v >> cost;
+    struct Edge edge = {u, v, cost};
+    edgelist.pb(edge);
+    // struct Edge edge2 = {v, u, cost};
+    // edgelist.pb(edge2);
+  }
+  // a negative cycle reachable from source,  then other vertices dist at starting is INFLL
+  // a negative cycle not reachable from source, or general case, find any negative cycle,  then other vertices dist at starting is 0.
+  // choose accordingly in the function.
+  bellmanford(5);
   return 0;
 }

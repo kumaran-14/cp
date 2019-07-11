@@ -54,12 +54,11 @@ vll entrytime(100005, -1);
 vll low(100005, -1);
 vector<bool> visited(100005, false);
 
-
 //handle found bridge;
-void isbridge(ll v, ll to) {
-  cout<<v<<"---"<<to<<" ";
+void isbridge(ll v, ll to)
+{
+  cout << v << "---" << to << " ";
 }
-
 
 //finding bridges.
 // three cases:
@@ -68,19 +67,26 @@ void isbridge(ll v, ll to) {
   visited[to]=true && to≠parent - the edge is back edge to one of the ancestors;
   visited[to]=false - the edge is part of DFS tree;
 */
-void bridgedfs(ll v, ll parent = NIL) {
+void bridgedfs(ll v, ll parent = NIL)
+{
   visited[v] = true;
   entrytime[v] = low[v] = timer++;
-  for(auto to:adjgraph[v]) {
-    if (to == parent) continue;
-    if(visited[to]) {
+  for (auto to : adjgraph[v])
+  {
+    if (to == parent)
+      continue;
+    if (visited[to])
+    {
       low[v] = min(low[v], entrytime[to]);
-    } else {
+    }
+    else
+    {
       bridgedfs(to, v);
       low[v] = min(low[v], low[to]);
       // low[to]= entrytime[v] means backedge from 'to' --> 'v'.
       // low[to] <  entrytime[v] means backedge from 'to' --> some ancestor of 'v'
-      if(low[to] > entrytime[v]) {
+      if (low[to] > entrytime[v])
+      {
         //bridge found;
         isbridge(v, to);
       }
@@ -88,22 +94,21 @@ void bridgedfs(ll v, ll parent = NIL) {
   }
 }
 
-
-
-
-void find_bridges() {
+void find_bridges()
+{
   ll timer = 0;
-  visited.assign(n+1, false);
-  entrytime.assign(n+1, -1);
-  low.assign(n+1, -1);
-  foii(i, 1, n) {
+  visited.assign(n + 1, false);
+  entrytime.assign(n + 1, -1);
+  low.assign(n + 1, -1);
+  foii(i, 1, n)
+  {
     //dfs for each cc in undirected graph.
-    if(!visited[i]) {
+    if (!visited[i])
+    {
       bridgedfs(i);
     }
   }
 }
-
 
 int main()
 {
@@ -111,10 +116,11 @@ int main()
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
   n = 100001;
-  cin>>n>>m;
-  foi(i, 0, m) {
+  cin >> n >> m;
+  foi(i, 0, m)
+  {
     ll u, v;
-    cin>>u>>v;
+    cin >> u >> v;
     adjgraph[u].pb(v);
     adjgraph[v].pb(u);
   }

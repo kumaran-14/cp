@@ -77,14 +77,17 @@ void dijkstra(ll source)
         v = j;
       }
     }
-    if(dist[v] == INFLL) {
+    if (dist[v] == INFLL)
+    {
       break;
     }
     visited[v] = true;
-    for(auto e:adjgraph[v]) {
-      ll next= e.f;
+    for (auto e : adjgraph[v])
+    {
+      ll next = e.f;
       ll cost = e.s;
-      if(dist[v]+cost < dist[next]) {
+      if (dist[v] + cost < dist[next])
+      {
         dist[next] = dist[v] + cost;
         parent[next] = v;
       }
@@ -92,14 +95,16 @@ void dijkstra(ll source)
   }
 }
 
-vll restore_path(ll source, ll dest) {
-    vll path;
-    for(ll v = dest; v != source; source = parent[v]) {
-      path.pb(v);
-    }
-    path.pb(source);
-    reverse(all(path));
-    return path;
+vll restore_path(ll source, ll dest)
+{
+  vll path;
+  for (ll v = dest; v != source; source = parent[v])
+  {
+    path.pb(v);
+  }
+  path.pb(source);
+  reverse(all(path));
+  return path;
 }
 
 int main()

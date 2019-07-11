@@ -15,7 +15,6 @@ using namespace std;
 #define all(v) v.begin(), v.end()
 #define sz(x) ((int)(x).size())
 #define endl "\n"
-#define MAXN 100005
 #define MOD 1000000007LL
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
@@ -42,14 +41,91 @@ using namespace std;
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
-// ll i, j;
+ll i, j;
 // ll a, b;
 // ll x, y;
+
+//some special constants;
+#define NO_COLOR 0 //unvisited
+#define GREY 1     //entered
+#define BLACK 2    //exited and visited fully.
+vvll adjgraph(100005);
+vector<ll> color;
+vll parent(100005);
+ll cycle_start, cycle_end;
+
+bool dfs(ll u)
+{
+  color[u] = GREY;
+  for (auto v : adjgraph[u])
+  {
+    if (color[v] == NO_COLOR)
+    {
+      parent[v] = u;
+      if (dfs(v))
+        return true;
+    }
+    else if (color[v] == GREY)
+    {
+      cycle_end = u;
+      cycle_start = v;
+      return true;
+    }
+  }
+  color[u] = BLACK;
+  return false;
+}
+
+void usecycle()
+{
+  ll u = cycle_end;
+  vll cyclearr;
+  while (u != cycle_start)
+  {
+    cyclearr.pb(u);
+    u = parent[u];
+  }
+  cyclearr.pb(cycle_start);
+  reverse(all(cyclearr));
+  cout << "Cycle found" << endl;
+  for (auto x : cyclearr)
+    cout << x << " --> ";
+}
+
+void find_cycle()
+{
+  color.assign(n + 1, NO_COLOR);
+  parent.assign(n + 1, -1);
+  cycle_start = -1;
+
+  foii(i, 1, n)
+  {
+    if (dfs(i))
+      break;
+  }
+  if (cycle_start == -1)
+  {
+    cout << "Acyclic" << endl;
+  }
+  else
+  {
+    usecycle();
+  }
+}
 
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
+  cin >> n >> m;
+  foi(i, 0, m)
+  {
+    ll u, v;
+    cin >> u >> v;
+    adjgraph[u].pb(v);
+    // adjgraph[v].pb(u);
+  }
+  find_cycle();
   return 0;
 }

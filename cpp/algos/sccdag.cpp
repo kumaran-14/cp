@@ -45,13 +45,25 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
+//indexed from 1
 vvll adjgraph(100005);
 vvll revadjgraph(100005);
-stack<ll> descpost;
+vector<pll> edgelist;
+stack<ll> topsortstack;
 vector<bool> visited(100005, false);
-ll sccidx = 0;
+
+//indexed from 1, because of sccidx.
+ll sccidx = 1;
+vll paintscc(100005, -1), dagdepth(100005, 0);
+vvll dag(100005);
 vvll sccarr(100005);
 
+void resetdfs() {
+  // n+1 or max number of scc +1, but n+1 >= scc_count + 1
+  visited.assign(n + 1, false);
+}
+
+// topsort revadjgraph
 void dfs(ll u)
 {
   visited[u] = true;
@@ -62,16 +74,15 @@ void dfs(ll u)
       dfs(x);
     }
   }
-  descpost.push(u);
+  topsortstack.push(u);
 }
 
+// parse scc
 void sccdfs(ll u)
 {
-  // vis.insert(u);
   visited[u] = true;
   for (auto x : adjgraph[u])
   {
-    // if (vis.find(x) == vis.end())
     if (!visited[x])
     {
       sccarr[sccidx].pb(x);
@@ -90,19 +101,73 @@ void findscc()
       dfs(i);
     }
   }
-  // step 1. find scc one by one.
-  visited.assign(n + 1, false);
-  while (!descpost.empty())
+  // step 2. find scc one by one.
+  resetdfs();
+  while (!topsortstack.empty())
   {
-    ll top = descpost.top();
-    descpost.pop();
+    ll top = topsortstack.top();
+    topsortstack.pop();
     if (!visited[top])
     {
+      //sccarr starts from index 1; 
       sccarr[sccidx].pb(top);
       sccdfs(top);
       sccidx++;
+      // at last counter goes extra by 1.
     }
   }
+}
+
+// topsort dag
+void dfs2(ll u)
+{
+  visited[u] = true;
+  for (auto x : dag[u])
+  {
+    if (!visited[x])
+    {
+      dfs2(x);
+    }
+  }
+  topsortstack.push(u);
+}
+
+
+void identifyscc() {
+  foi(i, 1, sccidx) {
+    for(auto u:sccarr[i]) {
+      paintscc[u] = i;
+    }
+  }
+}
+
+void builddag() {
+  ll u, v;
+  foi(i, 0, m) {
+    u = edgelist[i].f;
+    v = edgelist[i].s;
+    if(paintscc[u] != paintscc[v]) {
+      dag[paintscc[u]].pb(paintscc[v]);
+    }
+  }
+}
+
+void topsort_dag() {
+  resetdfs();
+  foi(i, 0, sccidx) {
+    if(!visited[i]) {
+      dfs2(i);
+    }
+  }
+  while(!topsortstack.empty()) {
+    //least indegree element;
+    ll top = topsortstack.top();
+    topsortstack.pop();
+    for(auto v:dag[top]) {
+      dagdepth[v] = max(dagdepth[v], dagdepth[top] + 1);
+    }
+  }
+
 }
 
 int main()
@@ -111,21 +176,24 @@ int main()
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
   cin >> n >> m;
+  ll u, v;
   foi(i, 0, m)
   {
-    ll u, v;
     cin >> u >> v;
     adjgraph[u].pb(v);
     revadjgraph[v].pb(u);
+    edgelist.pb({u, v});
   }
 
-  findscc();
-  foi(i, 0, sccidx)
-  {
-    cout << "{";
-    for (auto y : sccarr[i])
-      cout << y << ", ";
-    cout << "}" << endl;
+  findscc();          // populates sccarr
+  identifyscc();      // paints scc by id
+  builddag();         // new dag by scc id (1 to sccidx-1);
+  topsort_dag();
+
+  ll maxdepth = INT_MIN;
+  foi(i,1, sccidx) {
+    maxdepth = max(maxdepth, dagdepth[i]);
   }
+  cout<<maxdepth;
   return 0;
 }

@@ -44,14 +44,65 @@ using namespace std;
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
-// ll i, j;
 // ll a, b;
 // ll x, y;
+
+vvll adjgraph(MAXN);
+vll tin(MAXN), tout(MAXN);
+vvll up(MAXN);
+ll timer = 0;
+ll maxdepth;
+
+void dfs(ll u, ll parent) {
+  ll i, j;
+  tin[u] = ++timer;
+  up[u][0] = parent;
+  foii(i, 1, maxdepth) {
+    up[u][i] = up[up[u][i-1]][i-1];
+  }
+  for(auto v:adjgraph[u]) {
+    if(v != parent) {
+      dfs(v, u);
+    }
+  }
+  tout[u] = ++timer;
+}
+// u is ancestor of v
+bool is_ancestor(ll u, ll v) {
+  return (tin[u] <= tin[v] && tout[u] >= tout[v]);
+}
+
+ll lca(ll u, ll v) {
+  ll i, j;
+  if(is_ancestor(u, v)) return u;
+  if(is_ancestor(v, u)) return v;
+  fodd(i, maxdepth, 0) {
+    if(!is_ancestor(up[u][i], v)) {
+      u = up[u][i];
+    }
+  }
+  return up[u][0];
+}
+
+void precompute(ll root) {
+  timer = 0;
+  maxdepth = ceil(log2(n));
+  up.assign(n+1, vll(maxdepth+1));
+  dfs(root, root);
+}
 
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
+  ll i, j;
+  cin>>n>>m;
+  foi(i, 0, m) {
+    ll u, v;
+    cin>>u>>v;
+    adjgraph[u].pb(v);
+  }
+  precompute(1);
   return 0;
 }

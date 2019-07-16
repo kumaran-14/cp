@@ -63,9 +63,9 @@ void dfs(ll v)
 
 void topological_sort()
 {
-  visited.assign(n, false);
+  visited.assign(n+1, false);
   arr.clear();
-  foi(i, 0, n)
+  foii(i, 1, n)
   {
     if (!visited[i])
       dfs(i);

@@ -57,7 +57,7 @@ ll tc, n, m, k;
 //vectors are indexed from 1;
 vll setparent(100005, 0);
 vll setrank(100005, -1);
-vll setsize(100005, 0);
+vll setsize(100005, 1);
 
 void makeset(ll v)
 {

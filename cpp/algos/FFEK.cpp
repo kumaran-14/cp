@@ -44,74 +44,71 @@ using namespace std;
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
-ll i, j;
+// ll i, j;
 // ll a, b;
 // ll x, y;
 
-vvll adjgraph(MAXN);
-vll tin(MAXN, -1);
-vll low(MAXN, -1);
-ll timer, sccidx;
-vvll sccarr(MAXN);
-vector<bool> visited(MAXN, false);
-stack<ll> sccstack;
+vvll capacity(30, vll(30));
+vvll adjgraph(30);
+vll parent(30);
 
-
-void dfs(ll u, ll parent = -1) {
-  visited[u] = true;
-  sccstack.push(u);
-  tin[u] = low[u] = timer++;
-  for(auto v:adjgraph[u]) {
-    if(visited[v]) {
-      low[u] = min(low[u], tin[v]);
-    } else {
-      dfs(v, u);
-      low[u] = min(low[u], low[v]);
+// edmonds karp;
+ll bfs(ll source, ll target) {
+  fill(all(parent), -1);
+  parent[source] = -2;
+  queue<pll> q;
+  q.push({source, INFLL});
+  while(!q.empty()) {
+    ll curr = q.front().f;
+    ll currflow = q.front().s;
+    q.pop();
+    for(auto next:adjgraph[curr]) {
+      //not visited and capacity not 0
+      if(parent[next] == -1 && capacity[curr][next]) {
+        parent[next] = curr;
+        ll newflow = min(currflow, capacity[curr][next]);
+        if(next == target) return newflow;
+        q.push({next, newflow});
+      }
     }
   }
-  if(low[u] == tin[u]) {
-    while(sccstack.top() != u) {
-      ll top = sccstack.top();
-      sccstack.pop();
-      sccarr[sccidx].pb(top);
-    }
-    sccarr[sccidx].pb(sccstack.top());
-    sccstack.pop();
-    sccidx++;
-  }
+  return 0;
 }
 
-
-
-void tarjanscc() {
-  timer = 0;
-  sccidx = 0;
-  foii(i, 1, n) {
-    if(!visited[i]) {
-      dfs(i);
+//ford fulerson.
+ll maxflow(ll source, ll target) {
+  ll flow = 0;
+  ll newflow;
+  while(newflow = bfs(source, target)) {
+    flow += newflow;
+    ll curr = target;
+    while(curr != source) {
+      ll prev = parent[curr];
+      capacity[prev][curr] -= newflow;
+      capacity[curr][prev] += newflow;
+      curr = prev;
     }
   }
+  return flow;
 }
+
 
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n>>m;
-  foi(i, 0, m) {
-    ll u, v;
-    cin>>u>>v;
-    // directed graph
+  cin>>m;
+  while(m--) {
+    ll u, v, cost;
+    cin>>u>>v>>cost;
+    capacity[u][v] = cost;
+    capacity[v][u] = 0;
     adjgraph[u].pb(v);
+    adjgraph[v].pb(u);
   }
-  tarjanscc();
-  foi(i, 0, sccidx) {
-    cout<<"SCC "<<i<<": ";
-    for(auto el:sccarr[i]) {
-      cout<<el<<" ";
-    }
-    cout<<endl;
-  }
+  ll source = 19;
+  ll target = 20;
+  cout<<maxflow(source, target);
   return 0;
 }

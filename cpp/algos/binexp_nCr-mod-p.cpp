@@ -42,19 +42,51 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-ll tc, n, m, k;
+// ll tc, n, m, k;
 // ll ans = 0, c = 0;
 ll i, j;
 // ll a, b;
 // ll x, y;
+ll PN = pow(2, 20);
+vll fact(PN+1, -1);
+
+
+
+void precomputefac() {
+  fact[0] = 1;
+  foii(i, 1, PN) {
+    fact[i] = fact[i-1] * i % MOD;
+  }
+}
+
+ll power(ll x, ll y, ll P) {
+	ll res = 1;
+	x = x % P;
+	while(y > 0) {
+		if(y&1) {
+			res = (res*x) % P;
+		}
+		y = y>>1;
+		x = (x*x)%P;
+	}
+	return res;
+}
+
+ll mod_inv(ll n, ll P) {
+	return power(n, P-2, P);
+}
+
+ll nCrModPFermat(ll n, ll r, ll P) {
+	if(r == 0) return 1;
+	return (fact[n]* mod_inv(fact[r], P) % P * mod_inv(fact[n-r], P) % P) % P;
+}
 
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  ll X = 100;
-  cout<<X<<endl;
-  foii(i, 1, X) cout<<i<<endl;
+  precomputefac();
+  cout<<"50C32"<<nCrModPFermat(50, 32, MOD);
   return 0;
 }

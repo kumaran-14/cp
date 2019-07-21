@@ -48,13 +48,25 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
+vll prefix_func(string& str) {
+	ll T = sz(str);
+	vll pi(T, 0);
+	foi(i, 1, T) {
+		j = pi[i-1];
+		while(j > 0 && str[i] != str[j]) {
+			j = pi[j-1];
+		}
+		if(str[j] == str[i]) j++;
+		pi[i] = j;
+	}	
+	return pi;
+
+}
+
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  ll X = 100;
-  cout<<X<<endl;
-  foii(i, 1, X) cout<<i<<endl;
   return 0;
 }

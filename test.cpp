@@ -48,49 +48,91 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-vvll adjgraph(MAXN);
-vll tin(MAXN, -1);
-vll low(MAXN, -1);
-ll timer, sccidx;
-vvll sccarr(MAXN);
-vector<bool> visited(MAXN, false);
-stack<ll> sccstack;
+//height of max binary tree is 21.
+// max nodes in a level is 2^20; 
+ll PN = pow(2, 20);
+vll fact(PN+1, -1);
+vll levelcount(PN+1, 1);
+vll prefixlc(PN+1, 1);
+ll evnc, oddc;
 
-
-void dfs(ll u, ll parent = -1) {
-  visited[u] = true;
-  sccstack.push(u);
-  tin[u] = low[u] = timer++;
-  for(auto v:adjgraph[u]) {
-    if(visited[v]) {
-      low[u] = min(low[u], tin[v]);
-    } else {
-      dfs(v, u);
-      low[u] = min(low[u], low[v]);
-    }
-  }
-  if(low[u] == tin[u]) {
-    while(sccstack.top() != u) {
-      ll top = sccstack.top();
-      sccstack.pop();
-      sccarr[sccidx].pb(top);
-    }
-    sccarr[sccidx].pb(sccstack.top());
-    sccstack.pop();
-    sccidx++;
+void precomputefact() {
+  fact[0] = 1;
+  foii(i, 1, PN) {
+    fact[i] = fact[i-1] * i % MOD;
   }
 }
 
-
-
-void tarjanscc() {
-  timer = 0;
-  sccidx = 0;
-  foii(i, 1, n) {
-    if(!visited[i]) {
-      dfs(i);
+ll power(ll x, ll y, ll P) {
+  ll res = 1;
+  x = x % P;
+  while(y > 0) {
+    if(y&1) {
+      res = (res*x) % P;
     }
+    y = y>>1;
+    x = (x*x)%P;
   }
+  return res;
+}
+
+ll mod_inv(ll n, ll P) {
+  return power(n, P-2, P);
+}
+
+ll nCr(ll n, ll r, ll P = MOD) {
+  if(r == 0) return 1;
+  return fact[n]* mod_inv(fact[r], P) % P * mod_inv(fact[n-r], P) % P % P;
+}
+
+
+void precomputelevelcount() {
+  foii(i, 2, PN) {
+    levelcount[i] = ((levelcount[i-1]*2)%MOD);
+  }
+  foii(i, 1, PN){
+    prefixlc[i] = (levelcount[i]+prefixlc[i-1])%MOD;
+  }
+}
+
+ll getproduct(ll y, ll x) {
+  return (nCr(y, x)%MOD )* fact[x] % MOD;
+}
+
+ll oddtreecount(ll height, ll evnc, ll oddc) {
+  ll ways = 1;
+  ll x = prefixlc[height-1];
+  ways = getproduct(oddc, x);
+  ways = ways*getproduct(evnc, x-1)%MOD;
+
+  ways = ways*getproduct(levelcount[height], oddc-x) % MOD;
+  ways = ways*getproduct(levelcount[height], evnc - (x-1)) % MOD;
+  return ways;
+}
+
+
+ll evntreecount(ll height, ll evnc, ll oddc, bool isevn) {
+  ll ways = 1;
+  ll x = prefixlc[height-1];
+  ways = getproduct(evnc, x);
+  ways = ways*getproduct(oddc, x-1)%MOD;
+
+  ways = ways*getproduct(levelcount[height], evnc-x) % MOD;
+  ways = ways*getproduct(max(levelcount[height], oddc - (x-1)), min(levelcount[height], oddc - (x-1))) % MOD;
+
+   if(isevn) {
+    ways = ways << 1;
+    ways = ways%MOD;
+    return ways;
+   } else {
+    if(oddc > prefixlc[height]-1) {
+      //not a complete binary tree;
+      ways = 0;
+    }
+    ways = (ways + oddtreecount(height, evnc, oddc) % MOD);
+    ways = ways % MOD;
+    return ways;
+   }
 }
 
 int main()
@@ -98,20 +140,24 @@ int main()
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n>>m;
-  foi(i, 0, m) {
-    ll u, v;
-    cin>>u>>v;
-    // directed graph
-    adjgraph[u].pb(v);
-  }
-  tarjanscc();
-  foi(i, 0, sccidx) {
-    cout<<"SCC "<<i<<": ";
-    for(auto el:sccarr[i]) {
-      cout<<el<<" ";
+  precomputefact();
+  precomputelevelcount();
+  cin>>tc;
+  while(tc--) {
+    cin>>k;
+    ll evnc, oddc;
+    ll height = floor(log2(k));
+    if(k & 1) {
+      oddc = (k>>1) + 1;
+      evnc = (k>>1);
+    } else {
+      evnc = (k>>1);
+      oddc = (k>>1);
     }
-    cout<<endl;
+    ll ways = 1;
+    if(k != 1)
+      ways = evntreecount(height, evnc, oddc, (k&1?false:true));
+    cout<<ways<<endl;
   }
   return 0;
 }

@@ -38,9 +38,9 @@ using namespace std;
 #define pll pair<long long, long long>
 
 #define fast_io()                   \
-  ios_base::sync_with_stdio(false); \
-  cin.tie(NULL);                    \
-  cout.tie(NULL);
+ios_base::sync_with_stdio(false); \
+cin.tie(NULL);                    \
+cout.tie(NULL);
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
@@ -48,13 +48,45 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
+
+// [1, MOD-1], when MOD is prime.
+vll inv(MOD, 1);
+
+ll N = MAXN;
+ll M = MOD;
+vll fact(N+1, 1);
+
+
+// O(M)
+void precompute_inv() {
+	inv[1] = 1;
+	foi(i, 2, M) {
+		inv[i] = (M - (M/i)*(inv[M%i]) % M)%M;
+	}
+}
+
+// O(N)
+void precompute_fact_mod_p() {
+	fact[0] = 1;
+	foii(i, 1, N) {
+		fact[i] = fact[i-1]*i % M;
+	}
+
+}
+
+// O(1)
+ll nCr_mod_m(ll n, ll r) {
+	if(r == 0) return 1;
+	return (fact[n] * inv[fact[r]] % M * inv[fact[n-r]] % M) % M;
+	// nCr mod M = (n! / ((n-r)!*(r!)) mod M;
+	// == n! * (n-r!)^-1 *(r!)^-1 mod M; 
+}
+
+
 int main()
 {
-  fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
-  ll X = 100;
-  cout<<X<<endl;
-  foii(i, 1, X) cout<<i<<endl;
-  return 0;
+	fast_io();
+	freopen("./input.txt", "r", stdin);
+	freopen("./output.txt", "w", stdout);
+	return 0;
 }

@@ -85,7 +85,7 @@ void sccdfs(ll u)
   {
     if (!visited[x])
     {
-      sccarr[sccidx].pb(x);
+      sccarr[sccidx].pb(x); // or use sccarr.back().pb(x);
       sccdfs(x);
     }
   }
@@ -112,7 +112,7 @@ void findscc()
       //sccarr starts from index 1; 
       sccarr[sccidx].pb(top);
       sccdfs(top);
-      sccidx++;
+      sccidx++; // or use sccarr.emplace_back();
       // at last counter goes extra by 1.
     }
   }

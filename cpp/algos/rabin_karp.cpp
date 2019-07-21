@@ -37,10 +37,12 @@ using namespace std;
 #define pii pair<int, int>
 #define pll pair<long long, long long>
 
+
 #define fast_io()                   \
   ios_base::sync_with_stdio(false); \
   cin.tie(NULL);                    \
   cout.tie(NULL);
+
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
@@ -48,13 +50,48 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
+// polynomial rolling hash function, for lowercase letters
+// collision probability is 1/M;
+vll rabin_karp(string const& pattern, string const& text) {
+  ll P = 31;
+  ll M = 1e9 + 9;
+  ll T = sz(text);
+  ll S = sz(pattern);
+  vll p_pow(T, 1);
+  //precompte powers of P
+  p_pow[0] = 1;
+  foi(i, 1, T) {
+    p_pow[i] = (p_pow[i-1]*P)%M;
+  }
+  // precompute prefix hash. 1-indexed. h[i] = hash of text[0....i];
+  vll h(T+1, 0);
+  foi(i, 0, T) {
+    h[i+1] = (h[i] + (text[i]-'a' + 1)*p_pow[i])%M;
+  }
+  // compute pattern hash;
+  ll h_s = 0;
+  foi(i, 0, S) {
+    h_s += ((pattern[i]-'a'+1)*p_pow[i])%M;
+  }
+  //find occurences;
+  vll occs;
+  for(i = 0; i + S <= T; ++i) {
+    ll curr_h = (h[i+S] + m -h[i])%M;
+    if(curr_h == (h_s*p_pow[i] % M)) {
+      occs.pb(i);
+    }
+  }
+  return occs;
+}
+
+
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  ll X = 100;
-  cout<<X<<endl;
-  foii(i, 1, X) cout<<i<<endl;
+  string S = "asdf", T = "asdfqwtafgkzvasdfisdfhugjasfasdufdfafjdzfasdkjfhqepeqasdfasdwrqasjdkfaadfsadsfsdf";
+  vll ans = rabin_karp(S, T);
+  for(auto x:ans) cout<<x<<" ";
   return 0;
 }

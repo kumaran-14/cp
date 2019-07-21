@@ -48,13 +48,31 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
+// polynomial rolling hash function, for lowercase letters
+// collision probability is 1/M;
+ll compute_hash(string const& str) {
+  ll P = 31;
+  ll M = 1e9 + 9;
+  ll hash_val = 0;
+  ll strsize = sz(str);
+  vll p_pow(strsize);
+  p_pow[0] = 1;
+  foi(i, 1, strsize) {
+    p_pow[i] = (p_pow[i-1]*P)%M;
+  }
+
+  foi(i, 0, sz(str)) {
+    hash_val += ((str[i]-'a'+1)*p_pow[i])%M;
+  }
+  return hash_val;
+}
+
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  ll X = 100;
-  cout<<X<<endl;
-  foii(i, 1, X) cout<<i<<endl;
+  string str = "kumaran";
+  cout<<compute_hash(str);
   return 0;
 }

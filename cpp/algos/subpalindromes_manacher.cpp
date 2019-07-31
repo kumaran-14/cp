@@ -48,38 +48,58 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-vvll adjgraph(MAXN);
-vll tin(MAXN, -1);
-vll low(MAXN, -1);
-ll timer, sccidx;
-vector<bool> visited(MAXN, false);
-
-
-void dfs(ll u, ll parent = -1) {
-  visited[u] = true;
-  for(auto v:adjgraph[u]) {
-    if(visited[v]) {
-      low[u] = min(low[u], tin[v]);
-    } else {
-      dfs(v, u);
-      low[u] = min(low[u], low[v]);
+// O(n^2)
+pair<vll, vll> trivial(ll T, string str) {
+  vll d1(T), d2(T);
+  foi(i, 0, T) {
+    //odd length;
+    d1[i] = 1;
+    while(i-d1[i] >= 0 && i+d1[i] <= T-1 && str[i-d1[i]] == str[i+d1[i]]) {
+      d1[i]++;
+    }
+    //even length;
+    d2[i] = 0;
+    while(i-d2[i] -1 >= 0 && i + d2[i] <= T-1 && str[i-d2[i]-1] == str[i+d2[i]]) {
+      d2[i]++;  
     }
   }
+  return {d1, d2};
 }
 
+//O(n)
+pair<vll, vll> manacher(ll T, string str) {
+  vll d1(T), d2(T);
 
-
-void tarjanscc(ll start) {
-  dfs(start);
-}
-
-void reset() {
-  foii(i, 0, n+1) {
-    adjgraph[i].clear();
+  // odd
+  ll left = 0;
+  ll right = -1;
+  foi(i, 0, T) {
+    ll k = i > right ? 0 : min(d1[left + right-i], right - i +1);
+    while( i - k >= 0 && i + k <= T-1 && str[i-k] == str[i+k]) {
+      k++;
+    }
+    d1[i] = k--;
+    if(i+k> right) {
+      left = i - k;
+      right = i + k;
+    }
   }
-  fill(all(tin), -1);
-  fill(all(low), -1);
-  fill(all(visited), false);
+
+  //even
+  left = 0;
+  right = -1;
+  foi(i, 0, T) {
+    ll k = i > right ? 0 : min(d2[left + right-i+1], right - i +1);
+    while( i - k -1 >= 0 && i + k <= T-1 && str[i-k-1] == str[i+k]) {
+      k++;
+    }
+    d2[i] = k--;
+    if(i+k> right) {
+      left = i - k -1;
+      right = i + k;
+    }
+  }
+  return {d1, d2};
 }
 
 int main()
@@ -89,25 +109,12 @@ int main()
   freopen("./output.txt", "w", stdout);
   cin>>tc;
   while(tc--) {
-    reset();
-    ll start;
-    cin>>n>>m>>start;
-    foii(i, 1, n) {
-      cin>>tin[i];
-    }
-    foi(i, 0, m) {
-      ll u, v;
-      cin>>u>>v;
-      // directed graph
-      adjgraph[u].pb(v);
-    }
-    tarjanscc(start);
-    foi(i, 1, n) {
-      cout<<tin[i]<<endl[i==n];
-    }
-    foi(i, 1, n) {
-      cout<<low[i]<<endl[i==n];
-    }
+    string str;
+    cin>>str;
+    pair<vll, vll> ans = manacher(sz(str), str);
+    for(auto x:ans.f) cout<<x<<" ";
+      cout<<endl;
+    for(auto y:ans.s) cout<<y<<" ";
   }
   return 0;
 }

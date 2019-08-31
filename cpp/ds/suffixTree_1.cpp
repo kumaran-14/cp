@@ -56,15 +56,9 @@ ll tc, m, k;
 string str = "banana";
 ll n = sz(str);
 
-// suffix data structures
 vll suffixArr(n);
 vector<pair<ll, pll>> suffixes(n);
 vll indices(n);
-
-// longest common prefix : kasai datastructures
-vll rankarr(n, 0);
-vll lcp(n, 0);
-
 
 bool customcompare(pair<ll, pll>& p1, pair<ll, pll>& p2) {
   if(p1.s.f == p2.s.f) {
@@ -117,27 +111,6 @@ void buildSuffixArr() {
 }
 
 
-void kasai_lcp_construction() {
-  ll i, j;
-  foi(i, 0, n) {
-    rankarr[suffixArr[i]] = i;
-  }
-  k = 0;
-  foi(i, 0, n) {
-    if(rankarr[i] == n-1) {
-      k = 0;
-      continue;
-    }
-    j = suffixArr[rankarr[i] + 1];
-    while(i+k<n && j+k<n && str[i+k] == str[j+k]) {
-      k++;
-    }
-    lcp[rankarr[i]] = k;
-    if(k) k--;
-  }
-
-}
-
 int main()
 {
   fast_io();
@@ -148,9 +121,5 @@ int main()
   for(auto x:suffixArr) {
     cout<<x<<" ";
   }
-  cout<<endl;
-  // build lcp
-  kasai_lcp_construction();
-  for(auto x:lcp) cout<<x<<" ";
   return 0;
 }

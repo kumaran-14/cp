@@ -1,5 +1,5 @@
 // kumaran_14
-https://www.hackerrank.com/challenges/short-palindrome/problem
+//https://www.hackerrank.com/challenges/short-palindrome/problem
 #include <bits/stdc++.h>
 using namespace std;
 

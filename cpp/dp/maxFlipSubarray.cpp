@@ -1,7 +1,10 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
@@ -22,7 +25,7 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯ 
 #define l long int
 #define d double
 #define ll long long int
@@ -48,48 +51,60 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-const ll K = 25; //(2^25)
-// st[5][4] = [5, 5+2^4 + -1] ==> [5, 20]
-vvll st(MAXN, vll(K+1));
-vll arr(MAXN);
-
-void precomputeRSQ() {
-	foi(i, 0, n) {
-		st[i][0] = arr[i];
-	}
-	foii(j, 1, K) {
-		for(i=0; i + 1<<j <= n;i++) {
-			st[i][j] = st[i][j-1] + st[i+1<<(j-1)][j-1];
-			//[i, i+2^j +-1 ] = [i, i+2^(j-1) +-1] + [i+2^(j-1), (i+2^(j-1)) + 2^(j-1) -1]
-		}
-	}
-}
-
-ll RSQ(ll L, ll R) {
-	ll sum = 0;
-	fodd(j, K, 0) {
-		if((1<<j) <= (R-L+1)) {
-			sum += st[L][j];
-			L += 1<<j;
-		}
-	}
-}
-
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n;
-  foi(i, 0, n) {
-  	cin>>arr[i];
+  cin>>tc;
+  while(tc--) {
+    ll ans = 0;
+    string str;
+    cin>>str;
+    n = sz(str);
+    vll arr(n);
+    foi(i, 0, n) {
+      if(str[i] == 'R') {
+        arr[i] = -1;
+        ans++;
+      } 
+      else arr[i] = 1;
+    }
+    ll maxsum = INT_MIN;
+    ll maxend = 0;
+    k = 0;
+    ll from = 0;
+    ll to = 0;
+    foi(i, 0, n) {
+      maxend += arr[i];
+      if(maxsum <= maxend) {
+        maxsum = maxend;
+        from = k;
+        to = i;
+      }
+      if(maxend < 0) {
+        maxend = 0;
+        k = i+1;
+      }
+    }
+    cout<<ans+maxsum<<endl;
+
   }
-  precomputeRSQ();
-  ll x, y;
-  foi(x, 0, n) {
-  	foi(y, 0, n) {
-  		cout<<"RSQ("<<x<<","<<y<<"): "<<RSQ(x, y);
-  	}
-  }
-  return 0;
+  return 0; 
 }
+
+
+/*
+
+3
+RKKRK
+RKKR
+KRKRKRKRKRRKRRKRRK
+
+// get max R's by flipping a subarray.
+K is 1;
+R is -1;
+get max contiguous subarray sum, add it with number of Rs in the original array.
+
+*/
+

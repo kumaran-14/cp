@@ -1,7 +1,10 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
@@ -22,7 +25,7 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯ 
 #define l long int
 #define d double
 #define ll long long int
@@ -48,48 +51,62 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-const ll K = 25; //(2^25)
-// st[5][4] = [5, 5+2^4 + -1] ==> [5, 20]
-vvll st(MAXN, vll(K+1));
-vll arr(MAXN);
+// O(n^2)
+void LIS_1(ll pp) {
+  ll ans = INT_MIN;
+  cin>>n;
+  vll arr(n+1, 0);
+  foi(i, 0, n) cin>>arr[i]; 
 
-void precomputeRSQ() {
-	foi(i, 0, n) {
-		st[i][0] = arr[i];
-	}
-	foii(j, 1, K) {
-		for(i=0; i + 1<<j <= n;i++) {
-			st[i][j] = st[i][j-1] + st[i+1<<(j-1)][j-1];
-			//[i, i+2^j +-1 ] = [i, i+2^(j-1) +-1] + [i+2^(j-1), (i+2^(j-1)) + 2^(j-1) -1]
-		}
-	}
+  // max sum decreasing subsequence starting from left to right
+  vll dp1(n+1, 0), dp2(n+1, 0);
+  dp1[n-1] = arr[n-1];
+  fodd(i, n-2, 0) {
+    foi(j, i+1, n) {
+      if(arr[i] > arr[j]) {
+        dp1[i] = max(dp1[i], arr[i] + dp1[j]);
+      }
+    }
+    dp1[i] = max(dp1[i], arr[i]);
+  }
+
+  // max sum increasing subsequence starting from left to right
+  dp2[0] = arr[0];
+  foi(i, 1, n) {
+    foi(j, 0, i) {
+      if(arr[i] > arr[j]) {
+        dp2[i] = max(dp2[i], arr[i] + dp2[j]);
+      }
+    }
+    dp2[i] = max(dp2[i], arr[i]);
+  }
+
+
+  foi(i, 0, n) ans = max(ans, dp1[i] + dp2[i] - arr[i]);
+  cout<<ans<<endl;
+
 }
 
-ll RSQ(ll L, ll R) {
-	ll sum = 0;
-	fodd(j, K, 0) {
-		if((1<<j) <= (R-L+1)) {
-			sum += st[L][j];
-			L += 1<<j;
-		}
-	}
-}
 
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n;
-  foi(i, 0, n) {
-  	cin>>arr[i];
+  cin>>tc;
+  while(tc--) {
+    LIS_1(tc);
   }
-  precomputeRSQ();
-  ll x, y;
-  foi(x, 0, n) {
-  	foi(y, 0, n) {
-  		cout<<"RSQ("<<x<<","<<y<<"): "<<RSQ(x, y);
-  	}
-  }
-  return 0;
+  return 0; 
 }
+
+
+/*
+
+2
+6
+80 60 30 40 20 10
+9
+1 15 51 45 33 100 12 18 9
+*/
+

@@ -1,7 +1,10 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
@@ -22,7 +25,7 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯ 
 #define l long int
 #define d double
 #define ll long long int
@@ -47,49 +50,53 @@ ll tc, n, m, k;
 ll i, j;
 // ll a, b;
 // ll x, y;
-
-const ll K = 25; //(2^25)
-// st[5][4] = [5, 5+2^4 + -1] ==> [5, 20]
-vvll st(MAXN, vll(K+1));
 vll arr(MAXN);
-
-void precomputeRSQ() {
-	foi(i, 0, n) {
-		st[i][0] = arr[i];
-	}
-	foii(j, 1, K) {
-		for(i=0; i + 1<<j <= n;i++) {
-			st[i][j] = st[i][j-1] + st[i+1<<(j-1)][j-1];
-			//[i, i+2^j +-1 ] = [i, i+2^(j-1) +-1] + [i+2^(j-1), (i+2^(j-1)) + 2^(j-1) -1]
-		}
-	}
-}
-
-ll RSQ(ll L, ll R) {
-	ll sum = 0;
-	fodd(j, K, 0) {
-		if((1<<j) <= (R-L+1)) {
-			sum += st[L][j];
-			L += 1<<j;
-		}
-	}
-}
-
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n;
-  foi(i, 0, n) {
-  	cin>>arr[i];
+  cin>>tc;
+  while(tc--) {
+    cin>>n;
+    vll arr(n+1), dp(n+1, 0);
+    foii(i, 1, n) cin>>arr[i];
+    foii(i, 1, n) {
+      if(i-3 >= 0) {
+        dp[i] = max(dp[i-1], max(arr[i] + dp[i-2], arr[i] + arr[i-1] + dp[i-3]));
+      } else {
+        dp[i] += arr[i] + dp[i-1];
+      }
+    }
+
+    // No two elements are adjacent
+    /*
+    foii(i, 1, n) {
+      if(i-2 >= 0) {
+        dp[i] = max(dp[i-1], arr[i] + dp[i-2]);
+      } else {
+        dp[i] += arr[i] + dp[i-1];
+      }
+    }
+    */
+    for(auto x:dp) cout<<x<<" ";
+    cout<<endl;
   }
-  precomputeRSQ();
-  ll x, y;
-  foi(x, 0, n) {
-  	foi(y, 0, n) {
-  		cout<<"RSQ("<<x<<","<<y<<"): "<<RSQ(x, y);
-  	}
-  }
-  return 0;
+  return 0; 
 }
+
+
+/*
+
+4
+5
+100 1000 100 1000 1
+3
+1 2 3
+5
+1 1 1 1 1
+5
+3000 2000 1000 3 10
+
+*/
+

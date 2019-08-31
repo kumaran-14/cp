@@ -1,7 +1,10 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
@@ -22,7 +25,7 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯ 
 #define l long int
 #define d double
 #define ll long long int
@@ -48,31 +51,48 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-const ll K = 25; //(2^25)
-// st[5][4] = [5, 5+2^4 + -1] ==> [5, 20]
-vvll st(MAXN, vll(K+1));
-vll arr(MAXN);
 
-void precomputeRSQ() {
-	foi(i, 0, n) {
-		st[i][0] = arr[i];
-	}
-	foii(j, 1, K) {
-		for(i=0; i + 1<<j <= n;i++) {
-			st[i][j] = st[i][j-1] + st[i+1<<(j-1)][j-1];
-			//[i, i+2^j +-1 ] = [i, i+2^(j-1) +-1] + [i+2^(j-1), (i+2^(j-1)) + 2^(j-1) -1]
-		}
-	}
+// two strings
+void lcs() {
+  ll ans = INT_MIN;
+  cin>>n>>m;
+  string stn, stm;
+  cin>>stn>>stm;
+  vvll dp(n+1, vll(m+1, 0));
+  foii(i, 1, n) {
+    foii(j, 1, m) {
+      if(stn[i-1] == stm[j-1]) {
+        dp[i][j] = 1 + dp[i-1][j-1];
+      } else {
+        dp[i][j] = max(dp[i][j-1], dp[i-1][j]);
+      }
+      ans = max(ans, dp[i][j]);
+    }
+  }
+  cout<<ans<<endl;
 }
 
-ll RSQ(ll L, ll R) {
-	ll sum = 0;
-	fodd(j, K, 0) {
-		if((1<<j) <= (R-L+1)) {
-			sum += st[L][j];
-			L += 1<<j;
-		}
-	}
+// three strings;
+void lcs_3() {
+  ll ans = INT_MIN;
+  ll n1, n2, n3;
+  cin>>n1>>n2>>n3;
+  string stn, stm, stk;
+  cin>>stn>>stm>>stk;
+  vector<vvll> dp(n1+1, vvll(n2+1, vll(n3+1, 0)));
+  foii(i, 1, n1) {
+    foii(j, 1, n2) {
+      foii(k, 1, n3) {
+        if(stn[i-1] == stm[j-1] && stm[j-1] == stk[k-1]) {
+          dp[i][j][k] = 1 + dp[i-1][j-1][k-1];
+        } else {
+          dp[i][j][k] = max(dp[i][j-1][k], max(dp[i-1][j][k], dp[i][j][k-1]));
+        }
+        ans = max(ans, dp[i][j][k]);
+      }
+    }
+  }
+  cout<<ans<<endl;
 }
 
 int main()
@@ -80,16 +100,28 @@ int main()
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n;
-  foi(i, 0, n) {
-  	cin>>arr[i];
+  cin>>tc;
+  while(tc--) {
+    // lcs();
   }
-  precomputeRSQ();
-  ll x, y;
-  foi(x, 0, n) {
-  	foi(y, 0, n) {
-  		cout<<"RSQ("<<x<<","<<y<<"): "<<RSQ(x, y);
-  	}
-  }
-  return 0;
+  return 0; 
 }
+
+
+/*
+//two strings
+2
+6 6
+ABCDGH
+AEDFHR
+3 2
+ABC
+AC
+
+// three strings
+1
+5 8 13
+geeks geeksfor geeksforgeeks
+
+*/
+

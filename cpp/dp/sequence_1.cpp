@@ -1,7 +1,10 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
@@ -22,7 +25,7 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯ 
 #define l long int
 #define d double
 #define ll long long int
@@ -43,53 +46,63 @@ using namespace std;
   cout.tie(NULL);
 
 ll tc, n, m, k;
-// ll ans = 0, c = 0;
-ll i, j;
+ll ans = 0, c = 0;
 // ll a, b;
 // ll x, y;
 
-const ll K = 25; //(2^25)
-// st[5][4] = [5, 5+2^4 + -1] ==> [5, 20]
-vvll st(MAXN, vll(K+1));
-vll arr(MAXN);
+// void seq2seq(ll n, ll m) {
+//   if((n == 1 && m >= 1)) {
+//     ans++;
+//   }
+//   if(n <= 0) return;
+//   ll i;
+//   foii(i, 1, m/2) {
+//     seq2seq(n-1, i);
+//   }
+// }
 
-void precomputeRSQ() {
-	foi(i, 0, n) {
-		st[i][0] = arr[i];
-	}
-	foii(j, 1, K) {
-		for(i=0; i + 1<<j <= n;i++) {
-			st[i][j] = st[i][j-1] + st[i+1<<(j-1)][j-1];
-			//[i, i+2^j +-1 ] = [i, i+2^(j-1) +-1] + [i+2^(j-1), (i+2^(j-1)) + 2^(j-1) -1]
-		}
-	}
-}
-
-ll RSQ(ll L, ll R) {
-	ll sum = 0;
-	fodd(j, K, 0) {
-		if((1<<j) <= (R-L+1)) {
-			sum += st[L][j];
-			L += 1<<j;
-		}
-	}
-}
 
 int main()
 {
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  cin>>n;
-  foi(i, 0, n) {
-  	cin>>arr[i];
-  }
-  precomputeRSQ();
-  ll x, y;
-  foi(x, 0, n) {
-  	foi(y, 0, n) {
-  		cout<<"RSQ("<<x<<","<<y<<"): "<<RSQ(x, y);
-  	}
+  cin>>tc;
+  while(tc--) {
+    cin>>m>>n;
+    // ans = 0;
+    // ll i;
+    // foii(i, 1, m) {
+    //   seq2seq(n, i);
+    // }
+    // cout<<ans<<endl;
+    ll i, j;
+    vvll dp(n+1, vll(m+1, 0));
+    foii(i, 1, m) {
+      dp[1][i] = 1;
+    }
+    foii(i, 1, n) {
+      foii(j, 1, m) {
+        if(i == 1) {
+          dp[i][j] = j;
+        } else {
+          dp[i][j] = dp[i][j-1] + dp[i-1][j/2];
+        }
+      }
+    }
+    cout<<dp[n][m]<<endl;
   }
   return 0;
 }
+
+
+/*
+https://www.geeksforgeeks.org/sequences-given-length-every-element-equal-twice-previous/
+
+2
+3
+abc
+5
+axxxy
+*/
+

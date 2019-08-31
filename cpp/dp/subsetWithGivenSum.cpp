@@ -47,11 +47,101 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-ll tc, k;
+ll tc;
 // ll ans = 0, c = 0;
 ll i, j;
 // ll a, b;
 // ll x, y;
+
+ll n, k;
+vll arr;
+
+
+// vll arr(MAXN, 0);
+// vector<vector<bool>> dp(101, vector<bool>(101, false));
+// vvll subset;
+
+// void printRecSubsum(ll n, ll sum, vll ansarr = {}) {
+                                                                    //version 1  (prunes impossible branches)
+//   if(sum == 0) {
+//     subset.pb(ansarr);
+//     return;
+//   }
+//   if(sum < 0) return;
+//   if(dp[n][sum]) {                                               // use the boolean(OR) version of subsetsum function.
+//     printRecSubsum(n-1, sum, ansarr);
+//     ansarr.pb(arr[n-1]);
+//     printRecSubsum(n-1, sum-arr[n-1], ansarr);
+//   } else {
+//     return;
+//   }
+                                                                    // version 2,  O(2^n)
+    // if(sum == 0) {
+    // subset.pb(ansarr);
+    // return;
+    // }
+    // if(n == 0) return;
+    
+    // printRecSubsum(n-1, sum, ansarr);
+    // ansarr.pb(arr[n-1]);
+    // printRecSubsum(n-1, sum-arr[n-1], ansarr);
+// }
+
+
+// state is {n, curr_sum}
+int recursiveSubsetSum(ll n, ll curr_sum) {
+  if(curr_sum == 0) return 1;
+  if(n == 0) return 0;
+  if(arr[n-1] > curr_sum) {
+    return recursiveSubsetSum(n-1, curr_sum);
+  }
+  return recursiveSubsetSum(n-1, curr_sum-arr[n-1]) + recursiveSubsetSum(n-1, curr_sum);
+}
+
+// state {i, j} == {n, sum}
+// space : O(sum*n)
+int dpSubsetSum(ll n, ll sum) {
+  vvll dp(n+1, vll(sum+1, 0));
+  //base case, any number of elements left and sum is 0;
+  foii(i, 0, n) {
+    dp[i][0] = 1;
+  }
+  // run out of elements ,while sum != 0;
+  foii(i, 1, sum) {
+    dp[0][i] = 0;
+  }
+  foii(i, 1, n) {
+    foii(j, 0, sum) {
+      dp[i][j] = dp[i-1][j];
+      if(arr[i-1] <= j) {
+        dp[i][j] += dp[i-1][j - arr[i-1]];
+      }
+    }
+  }
+  return dp[n][sum];
+}
+
+
+// state {i, j} == {n, sum}
+//space: O(sum)
+int dpSubsetSum_2(ll n, ll sum) {
+  vvll dp(2, vll(sum+1, 0));
+  dp[0][0] = 1;
+  dp[1][0] = 1;
+  foii(i, 1, n) {
+    foii(j, 1, sum) {
+      dp[1][j] = dp[0][j];
+      if(arr[i-1] <= j) {
+        dp[1][j] += dp[0][j-arr[i-1]];
+      }
+    }
+    if(j != sum) {
+      dp[0] = dp[1];
+    }
+  }
+  return dp[1][sum];
+}
+
 
 int main()
 {
@@ -62,61 +152,17 @@ int main()
   while(tc--) {
     ll n;
     cin>>n;
-    vll set(n);
-    foi(i, 0, n) cin>>set[i];
-    ll sum = 0;
-    cin>>sum;
-    cout<<sum<<endl;
-    // dp logic
-          // O(n*sum) space
-          // dp[n][sum];
-          // vvll dp(n+1, vll(sum+1));
-          // foii(i, 0, n) {
-          //   dp[i][0] = 1;
-          // }
-          // foii(i, 1, sum) {
-          //   dp[0][i] = 0;
-          // }
-          // foii(i, 1, n) {
-          //   foii(j, 1, sum) {
-          //     if(set[i-1] > j) {
-          //       dp[i][j] = dp[i-1][j];
-          //     } else {
-          //       dp[i][j] = dp[i-1][j] || dp[i-1][j-set[i-1]];
-          //     }
-          //   }
-          // }
-          // cout<<dp[n-1][sum]<<endl;
-
-          // O(sum) space.
-          // ans = dp[1][sum];
-          vvll dp(2, vll(sum+1));
-          dp[0][0] = 1;
-          dp[1][0] = 1;
-          foii(i, 1, sum) {
-            dp[0][i] = 0;
-          }
-          foii(j, 1, n) {
-            foii(i, 1, sum) {
-              if(set[j-1] > i) {
-              dp[1][i] = dp[0][i];
-              } else
-              dp[1][i] = dp[0][i] || dp[0][i-set[j-1]];
-            }
-            if(i != sum) {
-              dp[0] = dp[1];
-            }
-            for(auto y:dp[1]) cout<<y<<" ";
-            cout<<endl;
-          }
-          for(auto x:dp) {
-              for(auto y:x) {
-                cout<<y<<" ";
-              }
-              cout<<endl;
-            }
-
-
+    arr.resize(n, 0);
+    foi(i, 0, n) {
+      cin>>arr[i];
+    }
+    ll k;
+    cin>>k;
+    ll ans = INT_MAX;
+    // ans = recursiveSubsetSum(n, k);
+    // ans = dpSubsetSum(n, k);
+    // ans = dpSubsetSum_2(n, k);
+    cout<<ans<<endl;
   }
   return 0;
 }
@@ -126,6 +172,6 @@ int main()
 input
 1  // testcases
 6  //arr size
-3 34 7 12 5 3 // arr el
+4 34 7 12 5 3 // arr el
 9 // sum:9. Find subset with sum =9;
 */

@@ -124,6 +124,7 @@ vll primeFactors(ll N) {
 
 
 vll uniquePrimeFactors(ll N) {
+  // same as primeFactors();
   vll factors;
   ll PF_idx = 0;
   ll PF = primes[PF_idx];
@@ -136,7 +137,7 @@ vll uniquePrimeFactors(ll N) {
   }
   // prime number case
   if(N != 1) factors.pb(N);
-
+  // unique remove duplicates, but doesnt resize container;
   auto it = unique(all(factors));
   factors.resize(distance(factors.begin(), it));
   return factors;

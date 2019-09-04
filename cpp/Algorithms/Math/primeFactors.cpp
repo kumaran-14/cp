@@ -50,9 +50,9 @@ ll tc, n, m, k;
 // ll i, j;
 // ll a, b;
 // ll x, y;
-
+#define PRIME_N 10000000
 ll _sieve_size;
-bitset<10000010> bs; //10^7 + extrabits
+bitset<(PRIME_N + 10)> bs; //10^7 + extrabits
 vll primes;
 
 void sieve(ll upperbound) {
@@ -84,16 +84,16 @@ void sieve(ll upperbound) {
 // upto 9999991^2; nearly upto 10^14; 
 bool isPrime(ll N) {
   ll i;
-
+  // for N < 10^7 
   if(N <_sieve_size)
     return bs.test(N);
   
-  // for N > 10^7 
   /*
-  The number of primes ≤ M – denoted by π(M ) – is bounded by O(M/(ln(M ) − 1)),
-  so the complexity of this prime testing function is about O( N / ln( N )).
+  The number of primes ≤ M, M = sqrt(N) – denoted by π(M ) – is bounded by O(M/(ln(M ) − 1)),
+  so the complexity of this prime testing function is about O( sqrt(N)/ln(sqrt(N) )).
   O( sqrt(N)/ln(sqrt(N) ))
   */
+  // for N > 10^7 
   for(auto x:primes) 
     if(N%x == 0)
       return false;
@@ -137,7 +137,7 @@ vll uniquePrimeFactors(ll N) {
   }
   // prime number case
   if(N != 1) factors.pb(N);
-  // unique remove duplicates, but doesnt resize container;
+  // std::unique removes cosecutive duplicates, doesnt resize container.
   auto it = unique(all(factors));
   factors.resize(distance(factors.begin(), it));
   return factors;
@@ -148,7 +148,7 @@ int main()
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  sieve(10000000); //10^7
+  sieve(PRIME_N); //10^7
   // cout<<"123123123123243 is "<<(isPrime(123123123123243) ? "" : "not ")<<"a prime";
   // for(auto x:primes) cout<<x<<" ";
   // cout<<"No of primes upto 10^7"<<sz(primes);

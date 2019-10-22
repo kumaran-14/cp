@@ -66,30 +66,27 @@ void makeset(ll v)
   setrank[v] = 0;
 }
 
+void initialize(ll n) {
+  ll i;
+  foi(i, 0, n) makeset(i);
+}
+
 //path compression.
-ll findset(ll v)
-{
-  if (setparent[v] == v)
-  {
-    return v;
-  }
+ll findset(ll v) {
+  if (setparent[v] == v) return v;
   return setparent[v] = findset(setparent[v]);
 }
 
 //union by rank. (depth of trees)
-void unionsets_rank(ll a, ll b)
-{
+void unionsets_rank(ll a, ll b) {
   a = findset(a);
   b = findset(b);
-  if (a != b)
-  {
-    if (setrank[a] < setrank[b])
-    {
+  if (a != b) {
+    if (setrank[a] < setrank[b]) {
       swap(a, b);
     }
     setparent[b] = a;
-    if (setrank[a] == setrank[b])
-    {
+    if (setrank[a] == setrank[b]) {
       setrank[a]++;
     }
   }
@@ -99,10 +96,8 @@ void unionsets_size(ll a, ll b)
 {
   a = findset(a);
   b = findset(b);
-  if (a != b)
-  {
-    if (setsize[a] < setsize[b])
-    {
+  if (a != b) {
+    if (setsize[a] < setsize[b]) {
       swap(a, b);
     }
     setparent[b] = a;

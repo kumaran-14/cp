@@ -10,7 +10,6 @@ using namespace std;
 #define p push
 #define mp make_pair
 #define pb push_back
-#define eb emplace_back
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define foi(i, a, n) for (i = (a); i < (n); ++i)
 #define foii(i, a, n) for (i = (a); i <= (n); ++i)
@@ -29,7 +28,6 @@ using namespace std;
 #define l long int
 #define d double
 #define ll long long int
-#define ull unsigned long long int
 #define ld long double
 #define vi vector<int>
 #define vll vector<long long>
@@ -52,16 +50,75 @@ ll tc, n, m, k;
 // ll a, b;
 // ll x, y;
 
+//print binary representation
+void binary(unsigned n) 
+{ 
+  unsigned i; 
+  string str = "";
+  for (i = 1 << 31; i > 0; i = i>>1) {
+    if((n&i)) str += '1';
+    else str += '0'; 
+  }
+  cout<<str<<endl;
+}
+
+// most significant set bit from left
+int msb(unsigned n) {
+  return (int)log2(n);
+}
+
+unsigned rightmostSetBit(ll n) {
+  //position
+  return log2((n)&(-n))+1;
+}
+
+ll rightmostDifferentBit(ll n, ll m) {
+  return rightmostSetBit(n^m);
+}
+
+void toggleBitsInRange(ll left, ll right) {
+  right--;
+  ll bitmask = ((1<<left)-1)^((1<<right)-1);
+  ll z = (n^bitmask);
+  // print toggled bits
+  binary(z);
+
+}
+
+ll binary_to_gray(ll n) {
+  return (n)^(n>>1);
+}
+
+ll gray_to_binary(ll n)
+{
+  ll ans=0;
+  for(;n;n=n>>1)
+    ans^=n;
+  return ans;
+}
+
+
+//count set bits
+ll csb(ll n) {
+  ll ans = 0;
+  ll i = 0;
+  while(n >= (1<<i)) {
+    if(n&(1<<i)) ans++;
+    i++;
+  }
+  return ans;
+}
+
+bool isKthBitSet(ll n, ll k) {
+  return(n&(1<<k));
+}
+
 
 int main()
 {
   fast_io();
-  #ifndef ONLINE_JUDGE
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  #endif
-
-  
-  
+  rep(i, 1, 1024) cout<<msb(i)<<endl;
   return 0;
 }

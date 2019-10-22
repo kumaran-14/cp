@@ -1,7 +1,10 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
@@ -22,8 +25,8 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
-#define l long int
+// ¯\_(ツ)_/¯ 
+// #define l long int
 #define d double
 #define ll long long int
 #define ld long double
@@ -37,12 +40,10 @@ using namespace std;
 #define pii pair<int, int>
 #define pll pair<long long, long long>
 
-
 #define fast_io()                   \
   ios_base::sync_with_stdio(false); \
   cin.tie(NULL);                    \
   cout.tie(NULL);
-
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
@@ -50,48 +51,32 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-// polynomial rolling hash function, for lowercase letters
-// collision probability is 1/M;
-vll rabin_karp(string const& pattern, string const& text) {
-  ll P = 31;
-  ll M = 1e9 + 9;
-  ll T = sz(text);
-  ll S = sz(pattern);
-  vll p_pow(T, 1);
-  //precompte powers of P
-  p_pow[0] = 1;
-  foi(i, 1, T) {
-    p_pow[i] = (p_pow[i-1]*P)%M;
-  }
-  // precompute prefix hash. 1-indexed. h[i] = hash of text[0....i];
-  vll h(T+1, 0);
-  foi(i, 0, T) {
-    h[i+1] = (h[i] + (text[i]-'a' + 1)*p_pow[i])%M;
-  }
-  // compute pattern hash;
-  ll h_s = 0;
-  foi(i, 0, S) {
-    h_s += ((pattern[i]-'a'+1)*p_pow[i])%M;
-  }
-  //find occurences;
-  vll occs;
-  for(i = 0; i + S <= T; ++i) {
-    ll curr_h = (h[i+S] + M -h[i])%M;
-    if(curr_h == (h_s*p_pow[i] % M)) {
-      occs.pb(i);
-    }
-  }
-  return occs;
+bool isEmpty(ll &x, ll &y, ll &z) {
+  if (x > y) swap(x, y);
+  if (y > z) swap(y, z);
+  if (x > y) swap(x, y);
+  //x < y < z
+  if(z == 0)
+    return false;
+  if(y == 0)
+    return false;
+  return true;
 }
+
 
 
 int main()
 {
   fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
-  string S = "asdf", T = "asdfqwtafgkzvasdfisdfhugjasfasdufdfafjdzfasdkjfhqepeqasdfasdwrqasjdkfaadfsadsfsdf";
-  vll ans = rabin_karp(S, T);
-  for(auto x:ans) cout<<x<<" ";
+  //freopen("./input.txt", "r", stdin);
+  //freopen("./output.txt", "w", stdout);
+
+  // cin>>tc;
+  // while(tc--) {
+  cin>>n;
+  cout<<5;
+  // } 
+
+
   return 0;
 }

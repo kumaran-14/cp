@@ -21,7 +21,7 @@ public:
   {
     this->head = nullptr;
   }
-  treeNode *addNode(treeNode *head, int data)
+  treeNode* addNode(treeNode *head, int data)
   {
     if (head == nullptr)
     {
@@ -39,6 +39,7 @@ public:
     }
     return head;
   }
+
 
   void preOrder(treeNode *head)
   {

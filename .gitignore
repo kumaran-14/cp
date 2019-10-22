@@ -1,3 +1,5 @@
+
+
 # Prerequisites
 *.d
 
@@ -33,3 +35,7 @@
 
 # vscode
 .vscode
+
+.idea
+CMakeFiles
+cmake-build-debug

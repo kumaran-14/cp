@@ -1,13 +1,15 @@
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp> 
+// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯ 
 #define f first
 #define s second
 #define p push
 #define mp make_pair
 #define pb push_back
-#define eb emplace_back
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define foi(i, a, n) for (i = (a); i < (n); ++i)
 #define foii(i, a, n) for (i = (a); i <= (n); ++i)
@@ -22,7 +24,7 @@ using namespace std;
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯ 
 #define l long int
 #define d double
 #define ll long long int
@@ -37,51 +39,71 @@ using namespace std;
 #define pii pair<int, int>
 #define pll pair<long long, long long>
 
-
 #define fast_io()                   \
   ios_base::sync_with_stdio(false); \
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
-ll i, j;
+// ll i, j;
 // ll a, b;
 // ll x, y;
 
-// polynomial rolling hash function, for lowercase letters
-// collision probability is 1/M;
-vll rabin_karp(string const& pattern, string const& text) {
-  ll P = 31;
-  ll M = 1e9 + 9;
-  ll T = sz(text);
-  ll S = sz(pattern);
-  vll p_pow(T, 1);
-  //precompte powers of P
-  p_pow[0] = 1;
-  foi(i, 1, T) {
-    p_pow[i] = (p_pow[i-1]*P)%M;
+//print binary representation
+string binary(unsigned n) 
+{ 
+  unsigned i; 
+  string str = "";
+  for (i = 1 << 31; i > 0; i = i>>1) 
+    (n & i)? str[i]+= '1': str[i] += '0'; 
+  return str;
+} 
+
+unsigned rightmostSetBit(ll n) {
+  //position
+  return log2((n)&(-n))+1;
+}
+
+ll rightmostDifferentBit(ll n, ll m) {
+  return rightmostSetBit(n^m);
+}
+
+void toggleBitsInRange(ll left, ll right) {
+  right--;
+  ll bitmask = ((1<<left)-1)^((1<<right)-1);
+  ll z = (n^bitmask);
+  // print toggled bits
+  binary(z);
+
+}
+
+ll binary_to_gray(ll n) {
+  return (n)^(n>>1);
+}
+
+ll gray_to_binary(ll n)
+{
+  ll ans=0;
+  for(;n;n=n>>1)
+    ans^=n;
+  return ans;
+}
+
+
+//count set bits
+ll csb(ll n) {
+  ll ans = 0;
+  ll i = 1;
+  while(n >= (1<<i)) {
+    if(n&(1<<i)) ans++;
+    i++;
   }
-  // precompute prefix hash. 1-indexed. h[i] = hash of text[0....i];
-  vll h(T+1, 0);
-  foi(i, 0, T) {
-    h[i+1] = (h[i] + (text[i]-'a' + 1)*p_pow[i])%M;
-  }
-  // compute pattern hash;
-  ll h_s = 0;
-  foi(i, 0, S) {
-    h_s += ((pattern[i]-'a'+1)*p_pow[i])%M;
-  }
-  //find occurences;
-  vll occs;
-  for(i = 0; i + S <= T; ++i) {
-    ll curr_h = (h[i+S] + M -h[i])%M;
-    if(curr_h == (h_s*p_pow[i] % M)) {
-      occs.pb(i);
-    }
-  }
-  return occs;
+  return ans;
+}
+
+bool isKthBitSet(ll n, ll k) {
+  return(n&(1<<k));
 }
 
 
@@ -90,8 +112,20 @@ int main()
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
-  string S = "asdf", T = "asdfqwtafgkzvasdfisdfhugjasfasdufdfafjdzfasdkjfhqepeqasdfasdwrqasjdkfaadfsadsfsdf";
-  vll ans = rabin_karp(S, T);
-  for(auto x:ans) cout<<x<<" ";
+  cin>>tc;
+  while(tc--) {
+    cin>>n;
+    ll m = log2(n)+1;
+    ll i;
+    bool sparse = true;
+    foi(i, 0, m) {
+      if(isKthBitSet(n, i) && (isKthBitSet(n, i+1)))
+      {
+        sparse = false;
+        break;
+      }
+    }
+    cout<<sparse<<endl;
+  }
   return 0;
 }

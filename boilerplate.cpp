@@ -20,6 +20,7 @@ using namespace std;
 #define all(v) v.begin(), v.end()
 #define sz(x) ((int)(x).size())
 #define endl " \n"
+#define newl cout<<"\n"
 #define MAXN 100005
 #define MOD 1000000007LL
 #define EPS 1e-13
@@ -29,6 +30,7 @@ using namespace std;
 #define l long int
 #define d double
 #define ll long long int
+#define ull unsigned long long int
 #define ld long double
 #define vi vector<int>
 #define vll vector<long long>
@@ -55,7 +57,12 @@ ll tc, n, m, k;
 int main()
 {
   fast_io();
+  #ifndef ONLINE_JUDGE
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
+  #endif
+
+  
+  
   return 0;
 }

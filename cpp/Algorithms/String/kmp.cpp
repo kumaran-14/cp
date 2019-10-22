@@ -68,5 +68,8 @@ int main()
   fast_io();
   freopen("./input.txt", "r", stdin);
   freopen("./output.txt", "w", stdout);
+  string S = "asdf", T = "asdfqwtafgkzvasdfisdfhugjasfasdufdfafjdzfasdkjfhqepeqasdfasdwrqasjdkfaadfsadsfsdf";
+  vll ans = prefix_func(T);
+  for(auto x:ans) cout<<" "<<x;
   return 0;
 }

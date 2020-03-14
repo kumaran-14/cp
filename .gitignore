@@ -39,3 +39,15 @@
 .idea
 CMakeFiles
 cmake-build-debug
+test.cpp
+test
+test.c
+test__Generator.cpp
+test__Good.cpp
+test.cpp:tests
+tele.cpp
+concept
+concept.cpp
+a.out
+input.txt
+output.txt

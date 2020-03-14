@@ -55,17 +55,32 @@ ll i, j;
 
 int main()
 {
-  fast_io();
-  freopen("../input.txt", "r", stdin);
-  freopen("../output.txt", "w", stdout);
+    fast_io();
+    freopen("../input.txt", "r", stdin);
+    freopen("../output.txt", "w", stdout);
 
-  cin>>n;
-  vi arr(n, 0);
-  rep(i, 0, n) {
-    cin>>arr[i];
-  }
+    cin>>n;
+    vi arr(n, 0);
     ll ans = 0;
-    debug(ans);
-  return 0;
+    rep(i, 0, n) {
+      cin>>arr[i];
+    }
+    cin>>m;
+    rep(i, 0, m) {
+        ll x, y;
+        cin>>x>>y;
+        if(x > 1 && x < n) {
+            debug(x);
+            arr[x - 2] += y - 1;
+            arr[x] += arr[x - 1] - y;
+        }
+        arr[x-1] = 0;
+    }
+
+    rep(i, 0, n) {
+        cout<<arr[i]<<endl;
+    }
+
+    return 0;
 
 }

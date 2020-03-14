@@ -3,4 +3,4 @@ project(cp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cp test.cpp)
+add_executable(cp test.cpp cpp/Algorithms/Math/product.cpp)

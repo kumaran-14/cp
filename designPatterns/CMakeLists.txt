@@ -5,3 +5,5 @@ set(CMAKE_CXX_STANDARD 11)
 project(DesignPattern)
 
 add_subdirectory(CreationalPatterns/AbstractFactory)
+
+add_subdirectory(BehavioralPatterns/Command)

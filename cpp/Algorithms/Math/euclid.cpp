@@ -35,6 +35,14 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
+  /*
+
+   template<typename T>
+    T gcd(T a, T b) {
+        while((a %= b) && (b %= a));
+        return a | b;
+    }
+  */
 
 ll tc, n, m, k;
 

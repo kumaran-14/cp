@@ -63,7 +63,9 @@ void lcs() {
     foii(j, 1, m) {
       if(stn[i-1] == stm[j-1]) {
         dp[i][j] = 1 + dp[i-1][j-1];
-      } else {
+      }
+      // remove 'else' part, if Longest Common Substring needed.
+      else {
         dp[i][j] = max(dp[i][j-1], dp[i-1][j]);
       }
       ans = max(ans, dp[i][j]);

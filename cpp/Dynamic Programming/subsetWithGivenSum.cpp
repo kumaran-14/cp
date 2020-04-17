@@ -88,7 +88,8 @@ vll arr;
 // }
 
 
-// state is {n, curr_sum}
+// state is {n, curr
+// _sum}
 int recursiveSubsetSum(ll n, ll curr_sum) {
   if(curr_sum == 0) return 1;
   if(n == 0) return 0;
@@ -119,6 +120,16 @@ int dpSubsetSum(ll n, ll sum) {
     }
   }
   return dp[n][sum];
+
+  /* split array to two subset, such that diff between them is minimized.*/
+  /*
+    rep(i, sum/2+1, 0) {
+        if(dp[n][i])
+         cout<<((sum-j)-j)<<endl;
+         break;
+   }
+
+   */
 }
 
 

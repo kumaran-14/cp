@@ -68,6 +68,12 @@ void knapsack_unlimited() {
   cout<<dp[w]<<endl;
 }
 
+int r_knapsack(ll index, ll w, vll& weight, vll& price) {
+    if(index == 0 || w == 0) return 0;
+    if(weight[index] > w) return r_knapsack(index-1, w, weight, price);
+    return max(price[index] + r_knapsack(index-1, w-weight[index], weight, price), (ll)r_knapsack(index-1, w, weight, price));
+}
+
 int main()
 {
   fast_io();

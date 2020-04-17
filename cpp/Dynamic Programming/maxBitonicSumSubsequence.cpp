@@ -87,6 +87,35 @@ void LIS_1(ll pp) {
 
 }
 
+// longest bitonic subsequence using two lis.
+void LIS_2() {
+    vll dpi(n, 0), dpd(n, 0);
+    dpi[0] = 1;
+    dpd[n-1] = 1;
+    vll nums(n, 0);
+    rep(i, 0, n) cin>>nums[i];
+    rep(i, 1, n) {
+        ll mx = 0;
+        rep(j, 0, i)
+            if(nums[j] < nums[i])
+                mx = max(mx, dpi[j]);
+        dpi[i] += mx + 1;
+    }
+    rep(i, n-1, 0) {
+        ll mx = 0;
+        rep(j, n, i+1)
+            if(nums[j] < nums[i])
+                mx = max(mx, dpd[j]);
+        dpd[i] += mx + 1;
+    }
+//        rep(i, 0, n) cout<<dpi[i]<<endl[i==n-1];
+//        rep(i, 0, n) cout<<dpd[i]<<endl[i==n-1];
+
+    ll ans = INT_MIN;
+    rep(i, 0, n) ans = max(ans, dpi[i] + dpd[i] - 1);
+    cout<<ans<<endl;
+}
+
 
 int main()
 {

@@ -53,47 +53,38 @@ ll tc, n, m, k;
 // ll a, b;
 // ll x, y;
 
-ll maxprod_1(vll& arr) {
-    n = sz(arr);
-    ll ans = LONG_LONG_MIN;
-    ll prod = 1;
-    rep(i, 0, n) {
-        if(arr[i] == 0) prod = 1;
-        else {
-            prod = (prod*arr[i]);
-            ans = max(ans, prod);
-        }
 
+void heapify(vll& arr, ll treeidx, ll heapsize) {
+    ll maxidx = treeidx;
+    ll leftidx = maxidx*2 + 1;
+    ll rightidx = maxidx*2 + 2;
+
+    if(leftidx < heapsize && arr[leftidx] > arr[maxidx])
+        maxidx = leftidx;
+
+    if(rightidx < heapsize && arr[rightidx] > arr[maxidx])
+        maxidx = rightidx;
+
+    if(maxidx != treeidx) {
+        swap(arr[maxidx], arr[treeidx]);
+        heapify(arr, maxidx, heapsize);
     }
-    prod = 1;
-    rep(i, n, 0) {
-        if(arr[i] == 0) prod = 1;
-        else {
-            prod = (prod*arr[i]);
-            ans = max(ans, prod);
-        }
-    }
-    if(find(all(arr), 0) != arr.end() && ans < 0) return 0;
-    else
-        return ans;
 }
 
-ll maxprod_2(vll& arr) {
-    n = sz(arr);
-    ll ans = LONG_LONG_MIN;
-    ll maxprod = arr[0];
-    ll minprod = arr[0];
-    rep(i, 1, n) {
-        if(arr[i] < 0) swap(maxprod, minprod);
-        maxprod = max(arr[i], maxprod*arr[i]);
-        minprod = min(arr[i], minprod*arr[i]);
-        ans  = max(ans, max(maxprod, minprod));
-    }
-    return ans;
+void buildheap(vll& arr) {
+    ll n = sz(arr);
+    ll firstNonLeafIndex = (n/2) - 1;
+    rep(i, firstNonLeafIndex+1, 0)
+        heapify(arr, i, sz(arr));
 }
 
 
-
+void heapsort(vll& arr) {
+    rep(i, 0, sz(arr)) {
+        swap(arr[0], arr[sz(arr)-1-i]);
+        heapify(arr, 0, sz(arr)-1-i);
+    }
+}
 
 int main()
 {
@@ -108,18 +99,23 @@ int main()
         cin>>n;
         vll arr(n, 0);
         rep(i, 0, n) cin>>arr[i];
-        cout<<maxprod_2(arr);
+        buildheap(arr);
+
+        for(auto x: arr) cout<<x<< " ";
+        heapsort(arr);
         newl;
+        for(auto x: arr) cout<<x<< " ";
+
     }
+
 
     return 0;
 }
 
 /*
 2
+4
+0 1 0 1
 5
-6 -3 -10 0 2
-6
-2 3 4 5 -1 0
-
+0 0 1 0 0
 */

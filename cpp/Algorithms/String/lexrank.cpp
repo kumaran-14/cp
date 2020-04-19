@@ -53,47 +53,16 @@ ll tc, n, m, k;
 // ll a, b;
 // ll x, y;
 
-ll maxprod_1(vll& arr) {
-    n = sz(arr);
-    ll ans = LONG_LONG_MIN;
-    ll prod = 1;
-    rep(i, 0, n) {
-        if(arr[i] == 0) prod = 1;
-        else {
-            prod = (prod*arr[i]);
-            ans = max(ans, prod);
-        }
 
-    }
-    prod = 1;
-    rep(i, n, 0) {
-        if(arr[i] == 0) prod = 1;
-        else {
-            prod = (prod*arr[i]);
-            ans = max(ans, prod);
-        }
-    }
-    if(find(all(arr), 0) != arr.end() && ans < 0) return 0;
-    else
-        return ans;
+ll fact(ll k) {
+    return (k == 1 ? 1 : k*fact(k-1));
 }
 
-ll maxprod_2(vll& arr) {
-    n = sz(arr);
-    ll ans = LONG_LONG_MIN;
-    ll maxprod = arr[0];
-    ll minprod = arr[0];
-    rep(i, 1, n) {
-        if(arr[i] < 0) swap(maxprod, minprod);
-        maxprod = max(arr[i], maxprod*arr[i]);
-        minprod = min(arr[i], minprod*arr[i]);
-        ans  = max(ans, max(maxprod, minprod));
-    }
+ll rightSmall(string& str, char& ch, ll index) {
+    ll ans = 0;
+    rep(i, index, sz(str)) if(ch > str[i]) ans++;
     return ans;
 }
-
-
-
 
 int main()
 {
@@ -105,21 +74,37 @@ int main()
 
     cin>>tc;
     while(tc--) {
-        cin>>n;
-        vll arr(n, 0);
-        rep(i, 0, n) cin>>arr[i];
-        cout<<maxprod_2(arr);
+        string str;
+        cin>>str;
+        string temp = str;
+        sort(all(temp));
+        auto it = unique(all(temp));
+        int dist = distance(temp.begin(), it);
+        if(dist != sz(str)) {
+            cout<<0;
+            newl;
+            continue;
+        }
+        ll rank = 1;
+        ll fac = fact(sz(str));
+        rep(i, 0, sz(str)) {
+            fac /= (sz(str)-i);
+            ll count = rightSmall(str, str[i], i+1);
+            rank += count*fac;
+            rank %= 1000003;
+        }
+        cout<<rank;
         newl;
     }
+
 
     return 0;
 }
 
 /*
 2
+4
+0 1 0 1
 5
-6 -3 -10 0 2
-6
-2 3 4 5 -1 0
-
+0 0 1 0 0
 */

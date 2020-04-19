@@ -143,7 +143,42 @@ public:
   {
     return checkBST(root, 0, 10000);
   }
+
+  int getMaxWidth(treeNode* head) {
+      int ans = 0;
+      queue<treeNode*> q;
+      q.push(head);
+      while(!q.empty()){
+          int count = q.size();
+          ans = max(ans, count);
+          while(count--) {
+              auto top = q.front();
+              
+              q.pop();
+              if(top->left) q.push(top->left);
+              if(top->right) q.push(top->right);
+        }
+    }
+    return ans;
+  }
 };
+
+int getMaxWidthRecursion(treenNode* head)  {
+    int h = height(head);
+    int ans = 0;
+    for(int i = 1; i <= h; i++) {
+        ans = max(ans, getWidthForLevel(i, head));
+    }
+    return ans;
+}
+
+int getWidthForLevel(int i, treeNode* head) {
+
+    if(!head) return 0;
+
+    if(i == 1) return 1;
+    return getWidthForLevel(i-1, head->right) + getWidthForLevel(i-1, head->left);
+}
 
 int main()
 {

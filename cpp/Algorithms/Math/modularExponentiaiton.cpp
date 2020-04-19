@@ -11,7 +11,7 @@ int modExp(int x, int y, int N)
   if (y % 2 == 0)
     return (z * z) % N;
   else
-    return (x * z) % N;
+    return (x * z * z) % N;
 }
 
 int main()

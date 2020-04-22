@@ -74,6 +74,43 @@ int r_knapsack(ll index, ll w, vll& weight, vll& price) {
     return max(price[index] + r_knapsack(index-1, w-weight[index], weight, price), (ll)r_knapsack(index-1, w, weight, price));
 }
 
+
+void knapsack_alterstate() {
+    ll w;
+    cin>>n>>w;
+    vll weight(n, 0), price(n, 0);
+
+    ll pricesum = 0;
+    rep(i, 0, n) {
+        cin>>weight[i];
+        cin>>price[i];
+        pricesum += price[i];
+    }
+
+    // dp state = {first i elements, max_price} = min weight needed to make max_price from 0 - i elements
+    vvll dp(n+1, vll(pricesum+1, INFI));
+    dp[0][0] = 0;
+    rep(i, 1, n+1) {
+        rep(j, 0, pricesum+1) {
+            if(j - price[i-1] >= 0) {
+                dp[i][j] = min(dp[i-1][j], weight[i-1] + dp[i-1][j-price[i-1]]);
+            } else {
+                dp[i][j] = min(dp[i][j], dp[i-1][j]);
+            }
+        }
+    }
+
+
+
+    // max price for which min weight is less or equal to capacity.
+    ll ans = 0;
+    rep(i, 0, pricesum+1) {
+        if(dp[n][i] <= w) ans = i;
+    }
+
+    cout<<ans;
+}
+
 int main()
 {
   fast_io();

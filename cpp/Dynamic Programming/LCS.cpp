@@ -72,6 +72,21 @@ void lcs() {
     }
   }
   cout<<ans<<endl;
+  // to print any one of the lcs.
+    string lcstr = "";
+    ll x = n, y = m;
+    while(x && y) {
+        if(s1[x-1] == s2[y-1]) {
+            lcstr += s1[x-1];
+            x--;
+            y--;
+        } else if (dp[x][y] == dp[x-1][y]) {
+            x--;
+        } else {
+            y--;
+        }
+    }
+    reverse(all((lcstr)));
 }
 
 // three strings;

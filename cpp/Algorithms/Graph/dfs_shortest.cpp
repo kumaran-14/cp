@@ -5,7 +5,6 @@ using namespace std;
 // ¯\_(ツ)_/¯
 #define f first
 #define s second
-#define p push
 #define mp make_pair
 #define pb push_back
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -25,7 +24,6 @@ using namespace std;
 #define ld long double
 #define vll vector<long long>
 #define vvll vector<vll>
-//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns, with value 500.
 #define pll pair<long long, long long>
 
 #define fast_io()                   \
@@ -35,18 +33,25 @@ using namespace std;
 
 ll tc, n, m, k;
 
-int maxProfit(vector<int>& arr) {
-    int n = arr.size();
-    int profit = 0;
-    if(n == 1) return profit;
-    for(int i = 1; i < n; i++) {
-        if(arr[i] > arr[i-1]) profit += arr[i]-arr[i-1];
-        // or
-        // profit += max(arr[i]-arr[i-1], 0);
-    }
-    return profit;
+
+// knightwalk on chessboard.
+vll dx = {-2, -1, 1, 2, 2, 1, -1, -2};
+vll dy = {-1, -2, -2, -1, 1, 2, 2, 1};
+
+bool check(pll& v) {
+    return (v.f >= 0 && v.f < n && v.s >= 0 && v.s < m);
 }
 
+void dfs(pll u, vvll& adjgraph, pll& dest) {
+    rep(i, 0, 8) {
+        pll v = {u.f+dx[i], u.s+dy[i]};
+        // not maintaining visited,                                      pruning works only because all paths takes 1 cost
+        if(check(v) && adjgraph[v.f][v.s] > adjgraph[u.f][u.s] + 1 && adjgraph[dest.f][dest.s] > adjgraph[u.f][u.s] + 1 ) {
+            adjgraph[v.f][v.s] = adjgraph[u.f][u.s] + 1;
+            dfs(v, adjgraph, dest);
+        }
+    }
+}
 
 int main()
 {
@@ -56,14 +61,40 @@ int main()
     freopen("../output.txt", "w", stdout);
 #endif
 
+    cin>>tc;
+    while(tc--) {
+        cin>>n;
+        m = n;
+        ll x, y, tx, ty;
+        cin>>x>>y>>tx>>ty;
+        pll start = {--x, --y};
+        pll dest = {--tx, --ty};
+
+        vvll adjgraph(n, vll(m, INFI));
+        adjgraph[start.f][start.s] = 0;
+        ll ans = 0;
+        if(start.f == dest.f && start.s == dest.s) {
+            ans = 0;
+        } else {
+            dfs(start, adjgraph, dest);
+        }
+        ans = adjgraph[dest.f][dest.s];
+
+        cout<<ans;
+        newl;
+
+    }
 
     return 0;
 }
 
 /*
+
 2
-4
-0 1 0 1
-5
-0 0 1 0 0
+6
+4 5
+1 1
+20
+5 7
+15 20
 */

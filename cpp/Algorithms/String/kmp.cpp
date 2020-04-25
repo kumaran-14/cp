@@ -63,6 +63,34 @@ vll prefix_func(string& str) {
 
 }
 
+int strStr_1(string haystack, string needle) {
+    int n = needle.size();
+    string kmp = needle + '#';
+
+    // kmp pi;
+    vector<int> pi(n+1, 0);
+    for(int i = 1; i < n+1; i++) {
+        int j = pi[i-1];
+
+        while(j > 0 && kmp[i] != kmp[j]) j = kmp[j-1];
+
+        if(kmp[i] == kmp[j]) j++;
+        pi[i] = j;
+    }
+
+    int m = haystack.size();
+    // online algorithm.
+    int prev = 0;
+    for(int k = 1; k < m; k++) {
+        int j = prev;
+        while(j > 0 && haystack[k] != kmp[j]) j = pi[j-1];
+        if(haystack[k] == kmp[j]) j++;
+        prev = j;
+        if(j == n) return k - n + 1;
+    }
+    return -1;
+}
+
 int main()
 {
   fast_io();

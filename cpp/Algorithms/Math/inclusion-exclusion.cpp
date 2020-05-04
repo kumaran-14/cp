@@ -1,8 +1,10 @@
-
 // kumaran_14
+
+// #include <boost/multiprecision/cpp_int.hpp>
+// using boost::multiprecision::cpp_int;
 #include <bits/stdc++.h>
 using namespace std;
-
+// ¯\_(ツ)_/¯
 #define f first
 #define s second
 #define p push
@@ -18,12 +20,13 @@ using namespace std;
 #define all(v) v.begin(), v.end()
 #define sz(x) ((int)(x).size())
 #define endl " \n"
+#define newl cout<<"\n"
 #define MAXN 100005
 #define MOD 1000000007LL
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-
+// ¯\_(ツ)_/¯
 #define l long int
 #define d double
 #define ll long long int
@@ -43,64 +46,59 @@ using namespace std;
   cin.tie(NULL);                    \
   cout.tie(NULL);
 
-// ll tc, n, m, k;
+ll tc, n, m, k;
 // ll ans = 0, c = 0;
 ll i, j;
 // ll a, b;
 // ll x, y;
-ll PN = pow(2, 20);
-vll fact(PN+1, -1);
 
-
-
-void precomputefac() {
-  fact[0] = 1;
-  foii(i, 1, PN) {
-    fact[i] = fact[i-1] * i % MOD;
-  }
+ll lcmArray(vll arr) {
+    auto n = sz(arr);
+    ll ans = arr[0];
+    rep(i, 1, n) {
+        ans = ((ans * arr[i] )/( __gcd(ans , arr[i])));
+    }
+    return ans;
 }
 
-ll power(ll x, ll y, ll P) {
-	ll res = 1;
-	x = x % P;
-	while(y > 0) {
-		if(y&1) {
-			res = (res*x) % P;
-		}
-		y = y>>1;
-		x = (x*x)%P;
-	}
-	return res;
-}
-
-ll mod_inv(ll n, ll P) {
-	return power(n, P-2, P);
-}
-
-ll nCrModPFermat(ll n, ll r, ll P) {
-	if(r == 0) return 1;
-	return (fact[n]* mod_inv(fact[r], P) % P * mod_inv(fact[n-r], P) % P) % P;
-}
 
 int main()
 {
-  fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
-  precomputefac();
-  cout<<"50C32"<<nCrModPFermat(50, 32, MOD);
-  return 0;
-}
+    fast_io();
+//    freopen("../input.txt", "r", stdin);
+//    freopen("../output.txt", "w", stdout);
 
+    // SPOJ EASYMATH
 
-/*
-     easy ncr;
-     auto ncr = [&](ll n, ll r) {
-        int ans=1;
-        for(int i=1;i<=r;i++){
-            ans=ans*(n-i+1)/i;
+    cin>>tc;
+    while(tc--) {
+        ll a, b;
+        cin>>n>>m>>a>>b;
+        ll ans = 0;
+        ll arr[] = {a, a+b, a+2*b, a+3*b, a+4*b};
+        ll ans1 = n-1, ans2 = m;
+        ll sign = 1;
+        ll range = 2<<5;
+        rep(bitmask, 1, range) {
+            auto num = __builtin_popcount(bitmask);
+            if(num%2) sign = -1;
+            else sign = 1;
+            vll lcmarr;
+            ll j = 0;
+            ll bit = bitmask;
+            while(bit > 0) {
+                if(bit&1 == 1) {
+                    lcmarr.pb(arr[j]);
+                }
+                j++;
+                bit = bit >> 1;
+            }
+            ans1 += sign * ((n-1)/lcmArray((lcmarr)));
+            ans2 += sign * (m/lcmArray((lcmarr)));
         }
-        return ans;
-    };
+        ans = ans2 - ans1;
+        cout<<ans<<endl;
+    }
+    return 0;
 
- */
+}

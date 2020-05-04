@@ -48,6 +48,12 @@ ll tc, n, m, k;
 
 ll gcd(ll a, ll b) { return (b == 0 ? a : gcd(b, a%b));};
 
+inline ll gcd(ll a, ll b) {
+    if(a&&b)
+        while((a%=b)&&(b%=a));
+    return a^b;
+}
+
 ll lcm(ll a, ll b) {return (a*(b/gcd(a, b)));}
 
 ll xgcd(ll a, ll b, ll *x, ll* y) {

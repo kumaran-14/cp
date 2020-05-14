@@ -100,3 +100,30 @@ int main()
 
     return 0;
 }
+
+/*
+ *    min coins required;
+     int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        if(amount == 0) return 0;
+        vector<int> dp(amount+1, 0);
+        dp[0] = 1;
+        for(int i = 0; i < n; i++) {
+            for(int x = 1; x < amount+1; x++) {
+                if(x-coins[i] >= 0) {
+                    if(dp[x-coins[i]] == 0) continue;
+                    if(dp[x] == 0) {
+                        dp[x] = 1 + dp[x-coins[i]];
+                    } else {
+                        dp[x] = min(dp[x], 1 + dp[x-coins[i]]);
+                    }
+                }
+            }
+        }
+        for(auto x:dp) cout<<x<<" ";
+        if(dp[amount] == 0) return -1;
+        return dp[amount]-1;
+    }
+
+
+ */

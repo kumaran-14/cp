@@ -87,7 +87,6 @@ void lps(string& str) {
         }
     }
     cout<<dp[0][n-1]<<endl;
-    cout<<"ji";
 }
 
 

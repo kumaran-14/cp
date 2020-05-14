@@ -70,10 +70,20 @@ void LIS_1() {
   cout<<ans<<endl;
 }
 
+// O(n2) solution
+// LIS = LCS of (given array) and (increasing sorted array)
+
 
 // O(nLogn)
-void LIS_2() {
-
+int lengthOfLIS(vector<int>& nums) {
+    vector<int> vec;
+    int n = nums.size();
+    for(int i = 0; i < n; i++) {
+        auto it = lower_bound(vec.begin(), vec.end(), nums[i]);
+        if(it == vec.end()) vec.push_back(nums[i]);
+        else *it = nums[i];
+    }
+    return vec.size();
 }
 
 int main()

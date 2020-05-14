@@ -59,9 +59,6 @@ string lpss(string& str) {
     rep(i, 1, n) {
         int high = i;
         int low = i-1;
-        if(i == 5) {
-            cout<<"ji";
-        }
         while(low >=0 && high < n && str[high] == str[low]) {
             if(high - low +1 > len) {
                 len = high-low+1;

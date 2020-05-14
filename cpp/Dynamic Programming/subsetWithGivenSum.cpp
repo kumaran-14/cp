@@ -94,7 +94,8 @@ int recursiveSubsetSum(ll n, ll curr_sum) {
   if(curr_sum == 0) return 1;
   if(n == 0) return 0;
   if(arr[n-1] > curr_sum) {
-    return recursiveSubsetSum(n-1, curr_sum);
+    return recursiveSubsetSum(n-1,
+            curr_sum);
   }
   return recursiveSubsetSum(n-1, curr_sum-arr[n-1]) + recursiveSubsetSum(n-1, curr_sum);
 }

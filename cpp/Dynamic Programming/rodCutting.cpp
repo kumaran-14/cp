@@ -1,42 +1,32 @@
+// kumaran_14
 
-// #in;e <boost/multiprecision/cpp_int.hpp> 
-// using boost::multiprecision::cpp_int;  
+// #include <boost/multiprecision/cpp_int.hpp>
+// using boost::multiprecision::cpp_int;
 #include <bits/stdc++.h>
 using namespace std;
-// ¯\_(ツ)_/¯ 
+// ¯\_(ツ)_/¯
 #define f first
 #define s second
-#define p push
 #define mp make_pair
 #define pb push_back
-#define eb emplace_back
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
-#define foi(i, a, n) for (i = (a); i < (n); ++i)
-#define foii(i, a, n) for (i = (a); i <= (n); ++i)
-#define fod(i, a, n) for (i = (a); i > (n); --i)
-#define fodd(i, a, n) for (i = (a); i >= (n); --i)
 #define debug(x) cout << '>' << #x << ':' << x << endl;
 #define all(v) v.begin(), v.end()
 #define sz(x) ((int)(x).size())
 #define endl " \n"
-#define MAXN 100005
-#define MOD 1000000007LL
+#define newl cout<<"\n"
+#define MAXN 100005                 // 1e5 + 5
+#define MOD 1000000007LL            // 1e9 + 7
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
-// ¯\_(ツ)_/¯ 
-#define l long int
-#define d double
+// ¯\_(ツ)_/¯
 #define ll long long int
-#define ld long double
+#define ull unsigned long long int
 #define vi vector<int>
 #define vll vector<long long>
 #define vvi vector<vector<int>>
 #define vvll vector<vll>
-//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns, with value 500.
-#define mii map<int, int>
-#define mll map<long long, long long>
-#define pii pair<int, int>
 #define pll pair<long long, long long>
 
 #define fast_io()                   \
@@ -46,38 +36,45 @@ using namespace std;
 
 ll tc, n, m, k;
 // ll ans = 0, c = 0;
-ll i, j;
+// ll i, j;
 // ll a, b;
 // ll x, y;
 
 int main()
 {
-  fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
-  cin>>tc;
-  while(tc--) {
-    cin>>n;
-    vll price(n+1);
-    foii(i, 1, n) cin>>price[i];
-    vll dp(n+1, 0);
-    foii(i, 0, n) {
-      foii(j, 0, i) {
-        dp[i] = max(dp[i], price[j] + dp[i-j]);
-      }
+    fast_io();
+#ifndef ONLINE_JUDGE
+    freopen("../input.txt", "r", stdin);
+    freopen("../output.txt", "w", stdout);
+#endif
+
+    // UVa cutting rod
+    ll x;
+    while(cin>>x && x) {
+        cin>>n;
+        vll arr(n+2, 0);
+        arr[0] = 0;
+        rep(i, 1, n+1) cin>>arr[i];
+        arr[n+1] = x;
+        // state = {i, j} from i to j in arr
+        vvll dp(n+2, vll(n+2, -1));
+
+        rep(len, 1, n+2) {
+            for(int j = 0; j + len < n+2; j++) {
+                int left = j;
+                int right = j+len;
+                if(left+1 == right) {
+                    dp[left][right] = 0;
+                    continue;
+                }
+                dp[left][right] = INT_MAX;
+                for(int k = left+1; k < right; k++) {
+                    dp[left][right] = min(dp[left][right], arr[right]-arr[left] + dp[left][k] + dp[k][right]);
+                }
+            }
+        }
+        cout<<"The minimum cutting is "<<dp[0][n+1]<<".";
+        newl;
     }
-    cout<<*max_element(all(dp))<<endl;
-    // for(auto x:dp) cout<<x<<" ";
-  }
-  return 0; 
+    return 0;
 }
-
-
-/*
-
-1
-8
-1 5 8 9 10 17 17 20
-
-*/
-

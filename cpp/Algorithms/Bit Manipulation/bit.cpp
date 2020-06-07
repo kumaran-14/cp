@@ -122,3 +122,82 @@ int main()
   rep(i, 1, 1024) cout<<msb(i)<<endl;
   return 0;
 }
+
+/*
+https://raw.githubusercontent.com/mostafa-saad/ArabicCompetitiveProgramming/master/15%20C%2B%2B%20Programming%204%20Competitions/41%20C%2B%2B%20Programming%204%20Competitions%20-%20Bits.cpp
+
+
+Generally:	X%(2^n)  = X & (2^n -1)
+ so x%16 = x & 15
+
+Even test
+
+if(n%2 == 1)		-> Fails of n is negative
+if( (n&1) == 1)	-> Works always
+
+
+void printNumber(int n, int len)
+{
+	if(!len)
+		return ;
+
+	printNumber(n>>1, len-1);	// remove last bit
+	cout<<(n&1);						// print last bit
+}
+
+
+// Let's count bits
+
+int countNumBits1(int mask) {	// O(bits Length)
+	int ret = 0;	//1101001 -> 110100 -> 11010 -> 1101 -> 110 -> 11 -> 1 -> 0
+	while (mask) {
+		if(mask&1)
+			ret++;
+		mask >>= 1;
+	}
+	return ret;
+}
+
+// Get bit
+int getBit(int num, int idx) {
+  return ((num >> idx) & 1) == 1;		// 110100, idx = 4  -->  110 & 1 = 0
+}
+
+int setBit1(int num, int idx) {
+	return num | (1<<idx);
+}
+
+int setBit0(int num, int idx) {
+	return num & ~(1<<idx);				// 110100, idx = 3  -->  110100 & ~000100 = 110100 & 111011
+}
+
+int flipBit(int num, int idx) {
+	return num ^ (1<<idx);
+}
+
+
+X-1 is very important!
+
+X 	= 840 	= 01101001000
+X-1 = 839 	= 01101000111		What happened? First bit 16=(2^4) is removed, and 15=2^4-1 is added.
+
+X & (X-1) 	= 01101000000		first bit from right removed
+
+X & ~(X-1) 	= 01101001000 & 10010111000 = 00000001000	value of 1<<SmaintestBitIdx
+
+
+
+int countNumBits2(int mask) {	//	O(bits Count)		__builtin_popcount
+    int ret = 0;
+    while (mask) 	{
+        mask &= (mask-1);
+        ++ret;	// Simply remove the last bit and so on
+    }
+    return ret;
+}
+
+
+
+
+
+*/

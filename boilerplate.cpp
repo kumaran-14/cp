@@ -7,7 +7,6 @@ using namespace std;
 // ¯\_(ツ)_/¯ 
 #define f first
 #define s second
-#define p push
 #define mp make_pair
 #define pb push_back
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -16,8 +15,8 @@ using namespace std;
 #define sz(x) ((int)(x).size())
 #define endl " \n"
 #define newl cout<<"\n"
-#define MAXN 100005
-#define MOD 1000000007LL
+#define MAXN 100005                 // 1e5 + 5
+#define MOD 1000000007LL            // 1e9 + 7
 #define EPS 1e-13
 #define INFI 1000000000             // 10^9
 #define INFLL 1000000000000000000ll //10^18
@@ -28,8 +27,6 @@ using namespace std;
 #define vll vector<long long>
 #define vvi vector<vector<int>>
 #define vvll vector<vll>
-//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns, with value 500.
-#define mll map<long long, long long>
 #define pll pair<long long, long long>
 
 #define fast_io()                   \
@@ -42,6 +39,16 @@ ll tc, n, m, k;
 // ll i, j;
 // ll a, b;
 // ll x, y;
+
+struct hash_pair {
+    template <class T1, class T2>
+    size_t operator()(const pair<T1, T2>& p) const
+    {
+        auto hash1 = hash<T1>{}(p.first);
+        auto hash2 = hash<T2>{}(p.second);
+        return hash1 ^ hash2;
+    }
+}; // unordered_map<pll, ll, hash_pair> hm;
 
 
 int main()

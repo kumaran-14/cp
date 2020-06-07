@@ -58,6 +58,7 @@ ll i, j;
 vll mpf(MAXN, 0);
 vll pr;
 
+
 //primenumbers less than n;
 void eratosthenes(ll n) {
   foii(i, 2, n) {
@@ -69,6 +70,20 @@ void eratosthenes(ll n) {
       mpf[i*pr[j]] = pr[j];
     }
   }
+}
+
+// not used in solution yet. Check edge cases alone - 1, 2 and n-1, n
+void basic_eratosthenes(ll n) {
+    // all are primes
+    vector<bool> sieve(n+1, true);
+    // for every num - cancel out all its multiples.
+    for(int num = 2; num*num < n; num++) {
+        if(!sieve[num]) continue; // not prime
+        // first multiple to start is num*num, since all multiples lower than that will be marked by earlier numbers;
+        for(int multiple = num*num; multiple < n; multiple += num) {
+            sieve[multiple] = false;
+        }
+    }
 }
 
 int main()

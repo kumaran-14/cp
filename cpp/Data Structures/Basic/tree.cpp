@@ -180,6 +180,14 @@ int getWidthForLevel(int i, treeNode* head) {
     return getWidthForLevel(i-1, head->right) + getWidthForLevel(i-1, head->left);
 }
 
+treeNode* lca(treeNode* root, treeNode* p, treeNode* q) {
+  if(!root || root == q || root == p) return root;
+  auto left = lca(root->left, p, q);
+  auto right = lca(root->right, p, q);
+  if(left && right) return root;
+  return left ? left : right;
+}
+
 int main()
 {
   tree temp;

@@ -83,6 +83,7 @@ int findsmallpos(vll& arr) {
         if(arr[i] > 0) return k+1;
         k++;
     }
+    // 1 to sz(arr) - ind are all there
     return sz(arr)-ind + 1;
 
 }
@@ -115,5 +116,5 @@ int main()
 1
 6
 -10 -1 5 3 2 1 1
-// very good test case : ans = 5.
+// very good test case : ans = 4.
 */

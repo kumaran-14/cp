@@ -50,6 +50,18 @@ ll tc, n, m, k;
 // ll a, b;
 // ll x, y;
 
+/*
+ Answer these questions first, solution given below
+ 1. print number in binary
+ 2. get left most set bit
+ 3. get right most set bit
+ 4. make bit 0 at index i
+ 5. make bit 1 at index i
+ 6. get bit at index i
+ 7. flip bit at index i
+ 8. count set bits - 2 ways
+ */
+
 //print binary representation
 void binary(unsigned n) 
 { 
@@ -163,10 +175,13 @@ int getBit(int num, int idx) {
   return ((num >> idx) & 1) == 1;		// 110100, idx = 4  -->  110 & 1 = 0
 }
 
+ make bit as 1, aka set bit
 int setBit1(int num, int idx) {
 	return num | (1<<idx);
 }
 
+Note: ~ is not same as minus (-)
+ make bit as 0 aka unset set bit
 int setBit0(int num, int idx) {
 	return num & ~(1<<idx);				// 110100, idx = 3  -->  110100 & ~000100 = 110100 & 111011
 }

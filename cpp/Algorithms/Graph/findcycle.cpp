@@ -129,3 +129,29 @@ int main()
   find_cycle();
   return 0;
 }
+
+
+// if cycle exist, no topsort possible. BFS solution
+/*
+
+    vector<vector<int>> adjgraph(n, vector<int>());
+    vector<int> indegree(n, 0);
+    for (auto &p: pre) {
+        // directed edges
+        adjgraph[p.second].push_back(p.first);
+        indegree[p.first]++;
+    }
+    queue<int> q;
+    for (int i = 0; i < n; i++)
+        if (indegree[i] == 0) q.push(i);
+    while (!q.empty()) {
+        int curr = q.front(); q.pop(); n--;
+        for (auto next: adjgraph[curr])
+            if (--indegree[next] == 0) q.push(next);
+    }
+    if(n == 0) {
+        no cycle, topsort found;
+    } else {
+    cycle exists.
+
+ */

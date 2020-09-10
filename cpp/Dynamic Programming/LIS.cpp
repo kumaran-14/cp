@@ -86,6 +86,9 @@ int lengthOfLIS(vector<int>& nums) {
     return vec.size();
 }
 
+// How to form the longest increasing subsequence?
+// Tip: see longestDivisileSubset. Its like recursive parent
+
 int main()
 {
   fast_io();

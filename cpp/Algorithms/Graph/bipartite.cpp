@@ -101,3 +101,45 @@ int main()
 
     return 0;
 }
+
+// DFS solution
+class Solution {
+public:
+  bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+    for(auto& x:dislikes) {
+      x[0]--;
+      x[1]--;
+    }
+    vector<vector<int>> graph(n);
+    for(auto x:dislikes) {
+      graph[x[0]].push_back(x[1]);
+      graph[x[1]].push_back(x[0]);
+    }
+
+    vector<int> color(n, -1);
+
+    bool ans = true;
+    function<void(int, int)> dfs = [&](int u, int val) {
+      if(!ans) return;
+      if(color[u] == -1) color[u] = val;
+      for(auto v:graph[u]) {
+        if(color[v] == -1) {
+          dfs(v, color[u]^1);
+        }
+        else if(color[u] == color[v]){
+          ans = false;
+          return;
+        }
+      }
+    };
+    for(int i = 0; i < n; i++) {
+      if(color[i] == -1)
+        dfs(i, 0);
+    }
+    return ans;
+  }
+};
+
+// CSES - problem : building teams uses dfs . See william lin youtube for that.
+// Note: ~(-1) = 0
+// ~(0) = -1;

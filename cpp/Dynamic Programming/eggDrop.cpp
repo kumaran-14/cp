@@ -52,12 +52,6 @@ ll tc, n, m, k;
 // ll x, y;
 
 
-
-
-
-
-
-
 int main()
 {
     fast_io();
@@ -80,6 +74,7 @@ int main()
                     ll val = INT_MAX;
                     // drop on floor 1 to j
                     rep(drop, 1, j+1) {
+                      // dropped egg counts as one, egg breaks, egg does not break
                         val = min(val, 1+max(dp[i-1][j-drop],dp[i][drop-1]));
                     }
                     dp[i][j] = val;

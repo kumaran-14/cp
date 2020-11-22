@@ -73,6 +73,31 @@ ll querytree(ll i)
   return sum;
 }
 
+struct Fenwick {
+  int n;
+  vector<ll> tree;
+  // 0 is not part of any range.
+  // tree range is from [1....n-1];
+  fenwick(ll _n): n(_n), tree(_n) {}
+
+  void Update(ll i, ll delta) {
+    while(i < tree.size()) {
+      tree[i] += delta;
+      i += i&(-i);
+    }
+  }
+  //[1....i], both inclusive.
+  ll Query(ll i) {
+
+    ll sum = 0;
+    while(i > 0) {
+      sum += tree[i];
+      i -= i&(-i);
+    }
+  }
+};
+
+
 int main()
 {
   fast_io();

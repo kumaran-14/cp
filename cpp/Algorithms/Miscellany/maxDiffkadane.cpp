@@ -65,8 +65,6 @@ int main()
         cin>>n;
         vll arr(n, 0);
         rep(i, 0, n) cin>>arr[i];
-//        vll dp(n, 0);
-//        rep(i, 1, n) dp[i] = ;
         ll ans = 0;
         ll curr = 0;
         rep(i, 1, n) {
@@ -80,6 +78,8 @@ int main()
 
     return 0;
 }
+
+// stock sell and buy problem variant.
 
 /*
 2

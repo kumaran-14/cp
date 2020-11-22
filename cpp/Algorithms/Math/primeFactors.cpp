@@ -105,7 +105,11 @@ bool isPrime(ll N) {
 /*
 In the worst case – when N is prime, this prime factoring algorithm with trial division requires
 testing all smaller primes up to N, mathematically denoted as O(π( sqrt(N) )) = O( sqrt(N) /ln sqrt(N) ).
-*/
+
+ No of primes less or == to N = sqrt(N) /ln sqrt(N);
+ So it takes O(no of primes less than or == N)
+
+ */
 vll primeFactors(ll N) {
   vll factors;
   ll PF_idx = 0;
@@ -160,3 +164,40 @@ int main()
   cout<<endl;
   return 0;
 }
+
+/*
+ code for prime factorization of a number X
+ */
+
+/*
+ Generate divisors of a Number X, from prime factorization of X
+ */
+/*
+ cin >> n;
+vector<pair<int, int>> primes;
+for( int p = 2; p * p <= n; p++ ){
+    if( n % p == 0 ){
+        int cnt = 0;
+        while( n % p == 0 ) cnt++, n /= p;
+        primes.push_back( { p, cnt } );
+    }
+}
+
+if( n > 1 ){
+    primes.push_back( { n, 1 } );
+}
+
+vector<int> d;
+d.push_back( 1 );
+
+for( int i = 0; i < primes.size(); i++ ){
+    int size = d.size();
+    int p_pow = 1;
+    for( int j = 0; j < primes[i].second; j++ ){
+        p_pow *= primes[i].first;
+        for( int k = 0; k < size; k++ ){
+            d.push_back( d[k] * p_pow );
+        }
+    }
+}
+*/

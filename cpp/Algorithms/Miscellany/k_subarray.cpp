@@ -81,7 +81,9 @@ public:
 
 
  Solution 3: Use sliding window to for exact K.
+  Ans: https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/235235/C%2B%2BJava-with-picture-prefixed-sliding-window
 
 
+  Note 4: https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/235002/One-code-template-to-solve-all-of-these-problems!
  */
 

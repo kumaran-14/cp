@@ -62,6 +62,8 @@ int main()
     freopen("../output.txt", "w", stdout);
 #endif
 
+    // kadane.
+
     cin>>tc;
     while(tc--) {
         cin>>n;

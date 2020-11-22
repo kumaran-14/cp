@@ -54,22 +54,6 @@ ll tc, n, m, k;
 // ll a, b;
 // ll x, y;
 
-// ans vector may contain more than 1 of each duplicate
-vll findduplicates_1(vll& arr) {
-    vll ans;
-    n = sz(arr);
-    rep(i, 0, n) {
-        int ti = abs(arr[i]);
-        if(arr[ti] >= 0) arr[ti] = - arr[ti];
-        else ans.pb(ti);
-    }
-    if(sz(ans) == 0) ans.pb(-1);
-    return ans;
-}
-
-
-
-
 int main()
 {
     fast_io();
@@ -110,6 +94,8 @@ int main()
     return 0;
 }
 
+
+// find sum of two numbers such that its abs distance is closest.
 /*
 3
 3

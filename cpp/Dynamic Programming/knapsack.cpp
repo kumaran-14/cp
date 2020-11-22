@@ -51,6 +51,7 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
+// unbounded knapsack
 void knapsack_unlimited() {
   ll w;
   cin>>n>>w;
@@ -74,7 +75,7 @@ int r_knapsack(ll index, ll w, vll& weight, vll& price) {
     return max(price[index] + r_knapsack(index-1, w-weight[index], weight, price), (ll)r_knapsack(index-1, w, weight, price));
 }
 
-
+// 0/1 knapsack
 void knapsack_alterstate() {
     ll w;
     cin>>n>>w;
@@ -110,6 +111,8 @@ void knapsack_alterstate() {
 
     cout<<ans;
 }
+
+//
 
 int main()
 {

@@ -79,7 +79,7 @@ ll nCr_mod_m(ll n, ll r) {
 	if(r == 0) return 1;
 	return (fact[n] * inv[fact[r]] % M * inv[fact[n-r]] % M) % M;
 	// nCr mod M = (n! / ((n-r)!*(r!)) mod M;
-	// == n! * (n-r!)^-1 *(r!)^-1 mod M; 
+	// which is the same as n! * (n-r!)^-1 *(r!)^-1 mod M;
 }
 
 

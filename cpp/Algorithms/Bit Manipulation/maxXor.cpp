@@ -25,6 +25,7 @@ public:
     int n = arr.size();
     // build tree;
     auto root = new node();
+    // construct trie.
     rep(i, 0, n) {
       auto head = root;
       auto num = arr[i];

@@ -51,18 +51,6 @@ ll i, j;
 // ll a, b;
 // ll x, y;
 
-bool isEmpty(ll &x, ll &y, ll &z) {
-  if (x > y) swap(x, y);
-  if (y > z) swap(y, z);
-  if (x > y) swap(x, y);
-  //x < y < z
-  if(z == 0)
-    return false;
-  if(y == 0)
-    return false;
-  return true;
-}
-
 
 
 int main()
@@ -71,11 +59,14 @@ int main()
   //freopen("./input.txt", "r", stdin);
   //freopen("./output.txt", "w", stdout);
 
-  // cin>>tc;
-  // while(tc--) {
-  cin>>n;
-  cout<<5;
-  // } 
+
+    ll a, b, x, y;
+    cin>>a>>b>>x>>y;
+    while(a < x ) {
+        a += b;
+        x -= y;
+    }
+    cout<<a;
 
 
   return 0;

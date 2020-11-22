@@ -24,13 +24,6 @@ using namespace std;
 
 ll tc, n, m, k;
 
-struct hash_pair {
-  template <class T1, class T2> size_t operator()(const pair<T1, T2> &p) const {
-    auto hash1 = hash<T1>{}(p.first);
-    auto hash2 = hash<T2>{}(p.second);
-    return hash1 ^ hash2;
-  }
-}; // unordered_map<pll, ll, hash_pair> hm;
 
 int main() {
   fast_io();
@@ -38,6 +31,16 @@ int main() {
   freopen("../input.txt", "r", stdin);
   freopen("../output.txt", "w", stdout);
 #endif
+  cin>>tc;
+  while(tc--) {
+    string str;
+    cin>>str;
+    ll ans = 0;
+    ans += 10*(str[0]-'1');
+    ans += (sz(str)*(sz(str)+1))/2;
+    cout<<ans;
+    newl;
+  }
 
   return 0;
 }

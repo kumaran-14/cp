@@ -65,7 +65,7 @@ void dijkstra(ll source)
 
   dist[source] = 0;
   //pll => {dist, vertex}
-  priority_queue<ll, vector<pll>, greater<pll>> q;
+  priority_queue<pll, vector<pll>, greater<pll>> q;
   //optimization: we dont need to store pair, only vertex. Overload with custom comparator for set which compares based on dist.
   q.push({0, source});
   while (!q.empty())

@@ -7,3 +7,4 @@ project(DesignPattern)
 add_subdirectory(CreationalPatterns/AbstractFactory)
 
 add_subdirectory(BehavioralPatterns/Command)
+add_subdirectory(BehavioralPatterns/State)

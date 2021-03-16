@@ -105,7 +105,7 @@ vll restore_path(ll source, ll dest)
     // no path.
     return path;
   }
-  for (ll v = dest; v != source; source = parent[v])
+  for (ll v = dest; v != source; v = parent[v])
   {
     path.pb(v);
   }

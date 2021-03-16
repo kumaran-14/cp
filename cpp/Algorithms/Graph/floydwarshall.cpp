@@ -75,7 +75,7 @@ void floydwarshall()
       foii(j, 1, n)
       {
         //negative edge
-        if (dist[i][j] < INFLL && dist[k][j] < INFLL)
+        if (dist[i][k] < INFLL && dist[k][j] < INFLL)
         {
           dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
           path[i][j] = path[k][j];

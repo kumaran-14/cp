@@ -1,3 +1,4 @@
+
 const int Dig = 10;
 
 struct bigint {

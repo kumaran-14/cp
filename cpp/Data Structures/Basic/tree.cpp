@@ -92,6 +92,7 @@ public:
     while (!treeq.empty())
     {
       pair<int, treeNode *> temp = treeq.front();
+      // .insert will not replace value if already exists.
       treemap.insert(temp);
       treeq.pop();
       if (temp.second->left != nullptr)
@@ -163,7 +164,7 @@ public:
   }
 };
 
-int getMaxWidthRecursion(treenNode* head)  {
+int getMaxWidthRecursion(treeNode* head)  {
     int h = height(head);
     int ans = 0;
     for(int i = 1; i <= h; i++) {

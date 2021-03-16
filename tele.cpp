@@ -1,160 +1,123 @@
-// kumaran_14
-
-// #include <boost/multiprecision/cpp_int.hpp> 
-// using boost::multiprecision::cpp_int;  
 #include <bits/stdc++.h>
 using namespace std;
-// ¯\_(ツ)_/¯ 
+
 #define f first
 #define s second
-#define p push
-#define mp make_pair
 #define pb push_back
-#define eb emplace_back
-#define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
-#define foi(i, a, n) for (i = (a); i < (n); ++i)
-#define foii(i, a, n) for (i = (a); i <= (n); ++i)
-#define fod(i, a, n) for (i = (a); i > (n); --i)
-#define fodd(i, a, n) for (i = (a); i >= (n); --i)
-#define debug(x) cout << '>' << #x << ':' << x << endl;
-#define all(v) v.begin(), v.end()
+#define rep(i, begin, end)                                                     \
+  for (__typeof(end) i = (begin) - ((begin) > (end));                          \
+       i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
+#define db(x) cout << '>' << #x << ':' << x << endl;
 #define sz(x) ((int)(x).size())
-#define endl " \n"
-#define MAXN 100005
-#define MOD 1000000007LL
-#define EPS 1e-13
-#define INFI 1000000000             // 10^9
-#define INFLL 1000000000000000000ll //10^18
-// ¯\_(ツ)_/¯ 
-#define l long int
-#define d double
+#define newl cout << "\n"
+
 #define ll long long int
-#define ld long double
 #define vi vector<int>
 #define vll vector<long long>
-#define vvi vector<vector<int>>
 #define vvll vector<vll>
-//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns, with value 500.
-#define mii map<int, int>
-#define mll map<long long, long long>
-#define pii pair<int, int>
 #define pll pair<long long, long long>
 
-#define fast_io()                   \
-  ios_base::sync_with_stdio(false); \
-  cin.tie(NULL);                    \
+#define fast_io()                                                              \
+  ios_base::sync_with_stdio(false);                                            \
+  cin.tie(NULL);                                                               \
   cout.tie(NULL);
 
-ll tc, n, m, k;
-// ll ans = 0, c = 0;
-// ll i, j;
-// ll a, b;
-// ll x, y;
+const int mxN = 2e5 + 5;
+const int mxM = 2e5 + 7;
+const int lg = 22;
 
-ll sumofnat(ll x) {
-  //sum of first x num, 1 + 2 + 3 + ...
-  return (x*(x+1))/2;
-}
+ll arr[mxN];
+
+struct node {
+  ll sum, inc, setx;
+  bool assign;
+};
+
+class Seg {
+  int n = 0;
+  vector<node> seg;
+
+  void apply(ll i, ll w, ll inc, ll setx, bool assign) {
+    if(assign) {
+      // assign and increment;
+      seg[i] = node{w*(inc+setx), inc, setx, assign};
+    } else {
+      seg[i].sum += w*inc;
+      seg[i].inc += inc;
+    }
+  }
+
+  void push(ll i, ll l, ll r){
+    ll m = (l+r)/2;
+    apply(i<<1, m-l+1, seg[i].inc, seg[i].setx, seg[i].assign);
+    apply(i<<1^1, r-m, seg[i].inc, seg[i].setx, seg[i].assign);
+    seg[i].inc = seg[i].setx = seg[i].assign = 0;
+  }
+
+  void modify(ll ql, ll qr, ll inc, ll setx, ll assign, ll i, ll l, ll r) {
+    if(r < ql || qr < l ) return;
+    if(ql <= l && r <= qr) {
+      apply(i, r-l+1, inc, setx, assign);
+    }
+    push(i, l, r);
+    ll m = (l+r)/2;
+    modify(ql, qr, inc, setx, assign, i<<1, l, m);
+    modify(ql, qr, inc, setx, assign, i<<1^1, m+1, r);
+    seg[i].sum = seg[i<<1].sum + seg[i<<1^1].sum;
+  }
+
+  ll query(ll ql, ll qr, ll i, ll l, ll r) {
+    if(r < ql || qr < l ) return 0;
+    if(ql <= l && r <= qr) {
+      return seg[i].sum;
+    }
+    push(i, l, r);
+    ll m = (l+r)/2;
+    return query(ql, qr, i<<1, l, m) + query(ql, qr, i<<1^1, m+1, r);
+  }
+
+public:
+  void init(int _n) {
+    n = _n;
+    seg.assign(4*n+5, node());
+  }
+
+  // both 1 based indexing. build(1, 1, n)
+  void build(ll i, ll l, ll r) {
+    if(l == r) {
+      seg[i] = node{arr[l], 0, 0, false};
+      return;
+    }
+    int m = (l+r)/2;
+    build(i<<1, l, m);
+    build(i<<1^1, m+1, r);
+  }
+
+  void increment(ll ql, ll qr, ll dx) {
+    modify(ql, qr, dx, 0, false, 1, 1, n);
+  }
+
+  void assign(ll ql, ll qr, ll x) {
+    modify(ql, qr, 0, x, true, 1, 1, n);
+  }
+
+  ll qry(ll ql, ll qr) {
+    return query(ql, qr, 1, 1, n);
+  }
+
+};
+
+Seg st;
 
 
-int main()
-{
+int main() {
   fast_io();
-  freopen("./input.txt", "r", stdin);
-  freopen("./output.txt", "w", stdout);
-
-  cin>>n;
-/*
-
-sort(all(arr));
-if(arr[0] == arr[1] && arr[1] == arr[2]) {
-  // all are same
-  ll ans = 0;
-  if(arr[0]%2 == 0) {
-    //even
-    ans += (arr[0]/2)*3;
-  } else {
-    //odd
-    ans += (arr[0]/2)*3 + 1;
-  }
-  ll sub = arr[0];
-  rep(i, 0, n) {
-    arr[i] -= sub;
-  }
-  // debug(ans);
-  // rep(i, 0, n) cout<<arr[i]<<" ";
-  ans += min(arr[1], arr[2]);
-  // debug(ans); P
-
-  cout<<ans<<endl;
-
-} else if(arr[0] == arr[1] && arr[1] != arr[2]) {
-  // first two same, next is are distinct.
-  ll ans = min(arr[2], 2*arr[0]);
-  // debug(ans);
-  // cout<<ans<<endl;
-  if(arr[0]%2 == 0) {
-    //even
-    vll temp(3, arr[0]);
-    ans = max(ans, allsame(temp));
-
-  } else {
-    //odd
-    vll temp(3, arr[0]);
-    ans = max(ans, allsame(temp)+1);
-  }
-  cout<<ans<<endl;
+#ifndef ONLINE_JUDGE
+  freopen("../input.txt", "r", stdin);
+  freopen("../output.txt", "w", stdout);
+#endif
 
 
-} else if (arr[0] != arr[1] && arr[1] == arr[2]) {
-  // last two are same, first two are distinct.
-  ll newans = arr[1];
-  arr[1] -= newans;
-  arr[2] -= newans;
-
-  ll ans = 0;
-  if(arr[0]%2 == 0) {
-    //even
-    ans += (arr[0]/2)*3;
-  } else {
-    //odd
-    ans += (arr[0]/2)*3 + 1;
-  }
-  ll sub = arr[0];
-  rep(i, 0, n) {
-    arr[i] -= sub;
-  }
-  // debug(ans);
-  // rep(i, 0, n) cout<<arr[i]<<" ";
-  ans += min(arr[1], arr[2]);
-  // debug(ans);
-  // debug(newans + ans);
-  cout<<ans+newans<<endl;;
-
-
-} else {
-  // all three are distinct.
-  ll ans = arr[1] - arr[0];
-  arr[1] -= ans;
-  arr[2] -= ans;
-  ll newans = min(arr[2], 2*arr[0]);
-  // debug(ans);
-  // cout<<ans<<endl;
-  //arr[0] == arr[1], third different;
-  if(arr[0]%2 == 0) {
-    //even
-    vll temp(3, arr[0]);
-    ans = ans + max(newans, allsame(temp));
-
-  } else {
-    //odd
-    vll temp(3, arr[0]);
-    ans = ans + max(newans, allsame(temp)+1);
-  }
-  cout<<ans<<endl;
-
-}
-*/  
 
   return 0;
 }

@@ -129,3 +129,6 @@ int main()
   }
   return 0;
 }
+
+// how to create graph where each node represents itself a scc;
+// ans: cses coin collector problem

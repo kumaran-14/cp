@@ -4,6 +4,8 @@
  * Call Back: It is a function that is registered to be called at later point of time based on user actions.
  * Note: Now the receiver object is not bound to the remote, but rather bound to the command.
  * The command itself is encapsulated. We can pass around commands to objects which run them.
+ *
+ * See the comment at bottom
  */
 #include <iostream>
 
@@ -140,6 +142,15 @@ int main() {
     if(userClickedButtonOn) {
         speakerRemote->perform(speakerOnCommand);
     }
+
+    /*
+     * Even more powerful way is to pass in the object for command to run on at runtime.
+     * Right now, bulb is coupled to bulbTurnOnCommand.
+     * Instead we can modify the execute method to take a receiver to act on.
+     * This way, the command object is truly decoupled from receiver(bulb) and invoker(remote)
+     *
+     *
+     * */
     return 0;
 }
 

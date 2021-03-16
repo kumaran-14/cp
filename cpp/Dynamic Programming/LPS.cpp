@@ -74,7 +74,7 @@ void lcs(string& stn, string& stm) {
 
 void lps(string& str) {
     n = sz(str);
-    vvll dp(n, vll(n, 0))
+    vvll dp(n, vll(n, 0));
     // state = lps{start, end}
     // string of len 1 = lps = 1
     rep(i, 0, n) dp[i][i] = 1;

@@ -90,3 +90,5 @@ int main()
 	freopen("./output.txt", "w", stdout);
 	return 0;
 }
+
+// remember to read galen_colin codechef tutorial on mod inv

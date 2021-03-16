@@ -62,7 +62,7 @@ vll setsize(100005, 1);
 void makeset(ll v)
 {
   setparent[v] = v;
-  // setsize[v] = 0;
+  // setsize[v] = 1;
   setrank[v] = 0;
 }
 

@@ -62,6 +62,7 @@ int main()
 
     cin>>tc;
     while(tc--) {
+        // n eggs, k floors;
         cin>>n>>k;
         vvll dp(n+1, vll(k+1, 0));
         // {egg, floor}

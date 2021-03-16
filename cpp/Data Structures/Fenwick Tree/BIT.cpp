@@ -1,106 +1,128 @@
-// kumaran_14
 #include <bits/stdc++.h>
 using namespace std;
 
 #define f first
 #define s second
-#define p push
-#define mp make_pair
 #define pb push_back
-#define foi(i, a, n) for (i = (a); i < (n); ++i)
-#define foii(i, a, n) for (i = (a); i <= (n); ++i)
-#define fod(i, a, n) for (i = (a); i > (n); --i)
-#define fodd(i, a, n) for (i = (a); i >= (n); --i)
-#define gcd __gcd
-#define mem(a, b) memset(a, b, sizeof a)
-#define all(v) v.begin(), v.end()
+#define rep(i, begin, end)                                                     \
+  for (__typeof(end) i = (begin) - ((begin) > (end));                          \
+       i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
+#define db(x) cout << '>' << #x << ':' << x << endl;
 #define sz(x) ((int)(x).size())
-#define endl "\n"
-#define println(a) cout << (a) << endl
-#define PI 3.141592653589793238L
-#define MOD 1000000007LL
-#define EPS 1e-13
-#define INFI 1000000000             // 10^9
-#define INFLL 1000000000000000000ll //10^18
+#define newl cout << "\n"
 
-#define l long int
-#define d double
 #define ll long long int
-#define ld long double
 #define vi vector<int>
-#define vs vector<string>
-#define vc vector<char>
 #define vll vector<long long>
-#define vvi vector<vector<int>>
 #define vvll vector<vll>
-//vector<vector<int>> v(10, vector<int>(20,500)); 2d vector initialization. of 10 rows and 20 columns.
-// Initialization value is 500.
-#define si set<int>
-#define mii map<int, int>
-#define mll map<long long, long long>
-#define pii pair<int, int>
 #define pll pair<long long, long long>
-#define pcc pair<char, char>
-#define pdd pair<double, double>
 
-#define fast_io()                   \
-  ios_base::sync_with_stdio(false); \
-  cin.tie(NULL);                    \
+#define fast_io()                                                              \
+  ios_base::sync_with_stdio(false);                                            \
+  cin.tie(NULL);                                                               \
   cout.tie(NULL);
 
-// ll tc, n, m, k, i, j, x, y, a, b, ans = 0, c = 0;
-ll tc, n;
-// fentree starts from index 1.
-vll fentree(100001, 0);
-// arr also starts from index 1;
-vll arr(100001, 0);
+const int mxN = 2e5 + 5;
+const int mxM = 2e5 + 7;
+const int lg = 22;
+
+ll arr[mxN];
+ll ft[mxN];
+
+ll tc, n, m, q;
+
+// ---------------------- READ -----------------------
+/*
+ * Ft is easy when, range query, point update
+ * or, range update and point qry;
+ *
+ * see rangeds for 2d fenwick tree with log(n)*log(n) complexity;
+ */
+
 
 void updatetree(ll i, ll val)
 {
-  for (; i <= n; i += i & (-i))
-  {
-    fentree[i] += val;
-  }
+  i++;
+  for (; i < mxN; i += i & (-i)) ft[i] += val;
 }
 
 ll querytree(ll i)
 {
+  i++;
   ll sum = 0;
-  for (; i > 0; i -= i & (-i))
-  {
-    sum += fentree[i];
-  }
+  for (; i; i -= i & (-i)) sum += ft[i];
   return sum;
 }
+
+// lower_bound for a prefix sum k
+ll get_kth(ll k) {
+  ll sum = 0;
+  ll pos = 0;
+  for(int i = log2(mxN)+1; i>=0; i--) {
+    if(pos + (1<<i) <= n && sum+ft[pos + (1<<i)] < k) {
+      sum += ft[pos + (1<<i)];
+      pos += (1<<i);
+    }
+  }
+  assert(pos <= n);
+  return pos+1;
+}
+
+// time complexity of operations is logn
+// it is possible to construct fenwick tree in O(n) time complexity, instead of O(nlogn);
 
 struct Fenwick {
   int n;
   vector<ll> tree;
   // 0 is not part of any range.
   // tree range is from [1....n-1];
-  fenwick(ll _n): n(_n), tree(_n) {}
+  Fenwick(ll _n): n(_n), tree(_n) {}
 
-  void Update(ll i, ll delta) {
+  void upd(ll i, ll delta) {
+    i++;
     while(i < tree.size()) {
       tree[i] += delta;
       i += i&(-i);
     }
   }
   //[1....i], both inclusive.
-  ll Query(ll i) {
-
+  ll qry(ll i) {
+    i++;
     ll sum = 0;
     while(i > 0) {
       sum += tree[i];
       i -= i&(-i);
     }
+    return sum;
   }
 };
 
 
+// incomplete range update tree. See in cp-algorithms.com
+struct RangeFenwick {
+  int n;
+  Fenwick t1, t2;
+  RangeFenwick(int _n):n(_n), t1(_n), t2(_n) {};
+  void RangeUpdate(int l, int r, int x){
+    t1.Update(l, x);
+    t1.Update(r+1, -x);
+    t2.Update(l, x*(l-1));
+    t2.Update(r+1, -x*r);
+  }
+
+  int PrefixSum(int i){
+    return t1.Query(i);
+  }
+  int RangeSum(int l, int r){
+    return PrefixSum(r)-PrefixSum(l-1);
+  }
+};
+
 int main()
 {
   fast_io();
+  freopen("../input.txt", "r", stdin);
+  freopen("../output.txt", "w", stdout);
   fentree[0] = -1;
   arr[0] = -1;
   // both not part of array;
@@ -113,19 +135,44 @@ int main()
   arr[5] = 1000;
   arr[6] = 5000;
   ll i;
-  foii(i, 1, n)
+  rep(i, 1, n+1)
   {
     updatetree(i, arr[i]);
   }
   // query 2nd to 5th element. [2, 5]
-  ll ans = querytree(5) - querytree(1);
-  cout << ans;
+  db(querytree(5) - querytree(1));
+  db(querytree(n) - querytree(n - 1));
+
   //increase last element by 4000;
   updatetree(n, 4000);
-  cout << endl;
-  cout << querytree(n) - querytree(n - 1);
-  // freopen("./input.txt", "r", stdin);
-  // freopen("./output.txt", "w", stdout);
+  db(querytree(n) - querytree(n - 1));
+
+  Fenwick t(7);
+  rep(i, 1, n+1) t.Update(i, arr[i]);
+  db(t.Query(5)-t.Query(1));
+  newl; newl;
+
+  RangeFenwick tt(15);
+  tt.RangeUpdate(0, 9, 3);
+  tt.RangeUpdate(6, 8, 9);
+  tt.RangeUpdate(9 ,9, 3);
+  tt.RangeUpdate(7, 7, 6);
+  tt.RangeUpdate(5, 8, 1);
+  tt.RangeUpdate(1, 2, 8);
+  tt.RangeUpdate(8, 8, 2);
+  tt.RangeUpdate(4, 4, 9);
+  tt.RangeUpdate(3, 8, 9);
+  tt.RangeUpdate(2, 2, 10);
+
+  db(tt.PrefixSum(0));
+  db(tt.PrefixSum(6));
+  db(tt.PrefixSum(9));
+  db(tt.PrefixSum(7));
+  db(tt.PrefixSum(5));
+  db(tt.PrefixSum(8));
+  db(tt.PrefixSum(4));
+  db(tt.PrefixSum(3));
+  db(tt.PrefixSum(2));
 
   // note the BIT tree size : 100001;
   return 0;

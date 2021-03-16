@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// clang-format off
+
 #define f first
 #define s second
 #define pb push_back
@@ -32,6 +34,7 @@ struct hash_pair {
   }
 }; // unordered_map<pll, ll, hash_pair> hm;
 
+// clang-format on
 int main() {
   fast_io();
 #ifndef ONLINE_JUDGE

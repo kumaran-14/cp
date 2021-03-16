@@ -43,6 +43,7 @@ int main()
     freopen("../output.txt", "w", stdout);
 #endif
 
+    // important idea.
     cin>>n;
     vll arr(n, 0);
     rep(i, 0, n) cin>>arr[i];

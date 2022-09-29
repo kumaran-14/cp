@@ -49,7 +49,8 @@ int main() {
   freopen("../output.txt", "w", stdout);
 #endif
 
-
+  // range min query
+  // can use binary search instead of dsu too. implementation in arpa trick original blog
   iota(par, par + mxN, 0);
   ll q;
   cin >> n >> q;
@@ -62,6 +63,7 @@ int main() {
     qq.L = L, qq.id = qid, qq.R = R;
     qs[R].pb(qq);
   }
+
   // stack of indices
   stack<ll> st;
   rep(R, 0, n) {

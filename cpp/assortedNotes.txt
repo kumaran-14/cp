@@ -1,0 +1,6 @@
+Multiset
+multiset::erase(multiset::iterator) deletes only 1 item
+multiset::erase(T val) deletes all occurrences of item.
+
+
+

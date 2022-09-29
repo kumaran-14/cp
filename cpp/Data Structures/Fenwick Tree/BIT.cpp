@@ -70,7 +70,6 @@ ll get_kth(ll k) {
 
 // time complexity of operations is logn
 // it is possible to construct fenwick tree in O(n) time complexity, instead of O(nlogn);
-
 struct Fenwick {
   int n;
   vector<ll> tree;
@@ -86,6 +85,7 @@ struct Fenwick {
     }
   }
   //[1....i], both inclusive.
+  // trick: sometimes total-qry(i) is useful to get suffix sum;
   ll qry(ll i) {
     i++;
     ll sum = 0;

@@ -2,6 +2,7 @@
 #include <cmath>
 using namespace std;
 
+// recursive
 int modExp(int x, int y, int N)
 {
   //output : (x ^ y ) mod N
@@ -12,6 +13,13 @@ int modExp(int x, int y, int N)
     return (z * z) % N;
   else
     return (x * z * z) % N;
+}
+
+// iterative
+int qpow(int x, int y, int mod) {
+  int res = 1;
+  for(; y; x = (ll) x * x % mod, y >>= 1) if(y & 1) res = (ll) res * x % mod;
+  return res;
 }
 
 int main()

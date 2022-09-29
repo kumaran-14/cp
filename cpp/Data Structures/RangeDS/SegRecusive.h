@@ -1,16 +1,20 @@
 
 const ll mxN = 1e5 + 7;
+// values should start from index 1
 ll arr[mxN];
 
 struct node {
-  ll mx;
+  ll el;
 };
-node seg[4*mxN];
+node seg[4*mxN]; // seg[1] -> for biggest range [1, n] in arr
 
 node combine(node a, node b){
-  return node{max(a.mx, b.mx)}; // max tree;
+  return node{max(a.el, b.el)}; // max tree;
 }
+// closely connected to combine function
+ll COMBINE_OUT_OF_BOUNDS = -(1e9+7);
 
+// build(1, 1, n) -> seg[1] represents range arr[1] to arr[n]
 void build(ll i, ll l, ll r) {
   if(l == r) {
     seg[i] = node{arr[l]};
@@ -35,7 +39,7 @@ void update(ll qi, ll x, ll i, ll l, ll r) {
 }
 
 node query(ll ql, ll qr, ll i, ll l, ll r) {
-  if( qr < l || r < ql) return node{(ll)(-(1e9+7))};
+  if( qr < l || r < ql) return node{COMBINE_OUT_OF_BOUNDS};
   if(ql <= l && r <= qr) return seg[i];
   ll m2 = (l+r)/2;
   return combine(
@@ -46,7 +50,7 @@ node query(ll ql, ll qr, ll i, ll l, ll r) {
 
 
 ll findfirst(ll ql, ll qr, ll x, ll i, ll l, ll r) {
-  if(seg[i].mx < x) return -1;
+  if(seg[i].el < x) return -1;
   if( qr < l || r < ql) return -1;
   if(l == r) return l;
   ll m2= (l+r)/2;

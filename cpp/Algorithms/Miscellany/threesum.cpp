@@ -52,7 +52,7 @@ ll tc, n, m, k;
 // ll x, y;
 
 // Extend methods for foursum.
-
+// https://cses.fi/problemset/task/1642/
 // sorting
 bool f4sum_1(vll& arr, ll sum) {
     sort(all(arr));

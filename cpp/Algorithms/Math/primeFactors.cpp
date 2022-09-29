@@ -55,6 +55,7 @@ ll _sieve_size;
 bitset<(PRIME_N + 10)> bs; //10^7 + extrabits
 vll primes;
 
+//O(N log log N )
 void sieve(ll upperbound) {
   ll i, j;
   _sieve_size = upperbound + 1;
@@ -110,6 +111,7 @@ testing all smaller primes up to N, mathematically denoted as O(π( sqrt(N) )) =
  So it takes O(no of primes less than or == N)
 
  */
+// r
 vll primeFactors(ll N) {
   vll factors;
   ll PF_idx = 0;
@@ -173,11 +175,12 @@ int main()
  Generate divisors of a Number X, from prime factorization of X
  */
 /*
- cin >> n;
+cin >> n;
 vector<pair<int, int>> primes;
 for( int p = 2; p * p <= n; p++ ){
     if( n % p == 0 ){
         int cnt = 0;
+        // p should never start from 1
         while( n % p == 0 ) cnt++, n /= p;
         primes.push_back( { p, cnt } );
     }

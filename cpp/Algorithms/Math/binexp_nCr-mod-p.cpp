@@ -95,12 +95,6 @@ int main()
 
 /*
      easy ncr;
-     auto ncr = [&](ll n, ll r) {
-        int ans=1;
-        for(int i=1;i<=r;i++){
-            ans=ans*(n-i+1)/i;
-        }
-        return ans;
-    };
+
 
  */

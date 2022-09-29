@@ -89,3 +89,29 @@ int main()
     return 0;
 }
 
+
+/*
+  case 1: find the first true
+ for [0....n-1] = [tttttfffffffffff]
+ lo  = 0, hi = n; // [0, n)
+ while(hi-lo > 1) {
+  ll mid = (lo+hi)/2;
+  if(fun(mid)) lo = mid; // [mid, n)
+  else right = mid; // [lo, mid);
+ }
+ ans = left;
+
+
+ case 2: find the first true
+ for [1...n] = [fffffffffttttt]
+ lo = 0, hi = n; // (0, n]
+ while(hi-lo > 1) {
+  ll mid = (1+lo+hi)/2; <!!!!!!!!! important ~~~~~~>
+  if(fun(mid)) hi = mid;
+  else lo = mid;
+ }
+ ans = right;
+
+
+ */
+

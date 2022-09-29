@@ -89,6 +89,16 @@ int main()
 	freopen("./input.txt", "r", stdin);
 	freopen("./output.txt", "w", stdout);
 	return 0;
+
+        /*
+          Fermat little theorem
+          when p is prime,
+          x^(p-1) = 1 mod p
+         */
+
+        // hence, x^(p-2) = x^(-1) mod p
+        // Therefore, [ inv(x) mod p ] is [ x^(p-2) mod p ]
+
 }
 
 // remember to read galen_colin codechef tutorial on mod inv

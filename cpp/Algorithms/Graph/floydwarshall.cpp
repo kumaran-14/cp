@@ -93,3 +93,10 @@ int main()
   n = 100;
   return 0;
 }
+
+/*
+ Use cases
+ 1.Widest path:  minimax and maximini problems (altenate disjoint sets also)
+ 2.All pair total path count
+ 3.All pair has a path
+ */

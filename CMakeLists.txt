@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 project(cp)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_COMPILER /usr/bin/g++)
+set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fdiagnostics-color=never")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g -O1")
 #
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")

@@ -88,7 +88,7 @@ int lengthOfLIS(vector<int>& nums) {
 // to make it non-decreasing, change lower to upper
 
 // How to form the longest increasing subsequence?
-// Tip: see longestDivisileSubset. Its like recursive parent
+// Tip: see longestDivisibleSubset. Its like recursive parent
 
 int main()
 {

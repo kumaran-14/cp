@@ -143,3 +143,19 @@ public:
 // CSES - problem : building teams uses dfs . See william lin youtube for that.
 // Note: ~(-1) = 0
 // ~(0) = -1;
+// bipartite technique:
+/*
+ -1: unvisited
+ 0: visited, group 1
+ 1: visited, group 2
+
+ use ^ to assign opposite color to child of u, if u is visited.
+
+ * */
+
+/*
+ 0: unvisited
+ 1: visited, group 1
+ 2: visited, group 2
+ use (3-color[u]) to assign opposite color to child of u, if u is visited.
+ * */

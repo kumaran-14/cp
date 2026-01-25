@@ -35,7 +35,7 @@ using namespace std;
 
 ll tc, n, m, k;
 
-// buy sell any time
+// buy sell any no. of times
 int maxProfit(vector<int>& arr) {
     int n = arr.size();
     int profit = 0;

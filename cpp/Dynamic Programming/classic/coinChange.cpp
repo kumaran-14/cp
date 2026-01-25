@@ -51,7 +51,12 @@ ll tc, n, m, k;
 // ll a, b;
 // ll x, y;
 
-// order matters
+/*
+ 1. coin first approach gives you combinations
+ 2. sum first approach gives you permutations
+ */
+
+// order matters, counts permutations to a sum;
 void coinChange_1() {
     cin>>target;
     vll coins = {1, 2, 3};
@@ -67,7 +72,7 @@ void coinChange_1() {
 }
 
 // order does not matter
-// exhaust usage of each coin, one by one at the top.
+// exhaust usage of each coin, one by one at the top, counts combinations
 void coinChange_1() {
     cin>>target;
     vll coins = {1, 2, 3};

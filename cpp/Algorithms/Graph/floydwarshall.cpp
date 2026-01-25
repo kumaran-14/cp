@@ -68,6 +68,7 @@ void floydwarshall()
       path[i][j] = i;
     }
   }
+  // k should always come outside
   foii(k, 1, n)
   {
     foii(i, 1, n)
@@ -99,4 +100,7 @@ int main()
  1.Widest path:  minimax and maximini problems (altenate disjoint sets also)
  2.All pair total path count
  3.All pair has a path
+
+
+ see cses shortest routes 2, must simpler condition
  */

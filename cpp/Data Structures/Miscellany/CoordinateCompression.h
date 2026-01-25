@@ -6,14 +6,16 @@ template <class T> void nor(vector<T> &v) {
   sort(all(v));
   v.erase(unique(all(v)), end(v));
 }
+// zero based
 template <class T> int ind(vector<T> &v, T x) {
   return lower_bound(all(v), x) - begin(v);
 }
 
-// v2
+// v2, one based
 map<int, int> compressed, decompress;
 for (int i = 1; i <= n; i++) {
   cin >> a[i];
+  // this line is important, do not remove.
   compressed[a[i]] = 0;
 }
 int index = 1;

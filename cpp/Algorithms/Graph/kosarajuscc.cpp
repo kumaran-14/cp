@@ -127,6 +127,59 @@ int main()
       cout << y << ", ";
     cout << "}" << endl;
   }
+  /* same impl within single function
+    cin>>n>>m;
+    vvll g(n+1);
+    vvll rg(n+1);
+    rep(i, 0, m) {
+      ll u, v; cin>>u>>v;
+      g[u].pb(v);
+      rg[v].pb(u);
+    }
+    vll vis(n+1, 0), rvis(n+1, 0);
+    vll topsort;
+    function<void(ll)> rdfs = [&](ll u) {
+      rvis[u] = 1;
+      for(auto v:rg[u]) {
+        if(!rvis[v]) {
+          rdfs(v);
+        }
+      }
+      topsort.pb(u);
+    };
+
+    rep(u, 1, n+1) if(!rvis[u]) rdfs(u);
+    reverse(all(topsort));
+
+    vvll scclist(n);
+    ll sccid = 0;
+    vll paint(n+1);
+    function<void(ll)> dfs = [&](ll u) {
+      vis[u] = 1;
+      scclist[sccid].pb(u);
+      for(auto v:g[u]) {
+        if(!vis[v]) {
+          dfs(v);
+        }
+      }
+    };
+
+    for(auto u:topsort) {
+      if(!vis[u]) {
+        dfs(u);
+        sccid++;
+      }
+    }
+    rep(id, 0, sccid) {
+      for(auto u:scclist[id]) {
+        paint[u] = id+1;
+      }
+    }
+    cout<<sccid;
+    nl;
+    rep(i, 1, n+1) cout<<paint[i]<<" ";
+
+   */
   return 0;
 }
 

@@ -3,4 +3,16 @@ multiset::erase(multiset::iterator) deletes only 1 item
 multiset::erase(T val) deletes all occurrences of item.
 
 
+x = n/2 + (n&1); // upperbound
 
+
+
+DP
+
+if order is important, nest k inside i
+first iteration: over i (ending at i)
+second iteration: over k
+
+if order is not important, nest k inside i
+second iteration: over k
+first iteration: over i (ending at i)

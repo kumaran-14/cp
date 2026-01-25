@@ -155,3 +155,7 @@ int main()
     cycle exists.
 
  */
+
+
+// https://codeforces.com/blog/entry/69158
+// shortest cycle, when total edges count is low. See comments for a bfs solution.

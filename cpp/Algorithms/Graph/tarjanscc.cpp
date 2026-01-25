@@ -68,7 +68,6 @@ void dfs(ll u, ll parent = -1) {
 }
 
 
-
 void tarjanscc(ll start) {
   dfs(start);
 }

@@ -180,14 +180,16 @@ int setBit1(int num, int idx) {
 	return num | (1<<idx);
 }
 
-Note: ~ is not same as minus (-)
- make bit as 0 aka unset set bit
+Note: ~ is not same as minus (-). Tilde operator is the BITWISE NOT, i.e it inverts all bits
+
+Question: make bit as 0 aka unset set bit
 int setBit0(int num, int idx) {
 	return num & ~(1<<idx);				// 110100, idx = 3  -->  110100 & ~000100 = 110100 & 111011
 }
 
 int flipBit(int num, int idx) {
 	return num ^ (1<<idx);
+
 }
 
 

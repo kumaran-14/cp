@@ -92,6 +92,8 @@ void findnegativecycle(ll x)
 }
 
 //single source shortest path
+// minimise distance from source, to all nodes.
+// see bellmanford.cpp, and cses high score, analysis tab
 void bellmanford(ll source)
 {
   // a negative cycle reachable from source,  then other vertex dist at starting is INFLL
@@ -101,6 +103,7 @@ void bellmanford(ll source)
   parent.assign(n + 1, -1);
   dist[source] = 0;
   // nth time is the time we check for negative cycle.
+  // if relaxation happens at the n'th iteration, then negative cycle exist.
   foi(i, 0, n)
   {
     cycle_end = -1;

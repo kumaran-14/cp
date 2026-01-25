@@ -38,7 +38,7 @@ ll tc, n, m, q;
  *
  * see rangeds for 2d fenwick tree with log(n)*log(n) complexity;
  */
-
+// Fenwick tree can be used to find two way nested ranges as well.
 
 void updatetree(ll i, ll val)
 {
@@ -70,6 +70,8 @@ ll get_kth(ll k) {
 
 // time complexity of operations is logn
 // it is possible to construct fenwick tree in O(n) time complexity, instead of O(nlogn);
+
+// SecondThread's Algorithms Live fenwick tree video at 39min th gives good intution about how update and query hits which index
 struct Fenwick {
   int n;
   vector<ll> tree;
@@ -96,6 +98,7 @@ struct Fenwick {
     return sum;
   }
 };
+
 
 
 // incomplete range update tree. See in cp-algorithms.com

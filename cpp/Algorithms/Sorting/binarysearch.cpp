@@ -91,7 +91,7 @@ int main()
 
 
 /*
-  case 1: find the first true
+  case 1: find the last true
  for [0....n-1] = [tttttfffffffffff]
  lo  = 0, hi = n; // [0, n)
  while(hi-lo > 1) {
@@ -101,7 +101,7 @@ int main()
  }
  ans = left;
 
-
+//https://leetcode.com/problems/first-bad-version
  case 2: find the first true
  for [1...n] = [fffffffffttttt]
  lo = 0, hi = n; // (0, n]

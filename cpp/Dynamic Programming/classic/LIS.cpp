@@ -75,6 +75,7 @@ void LIS_1() {
 
 
 // O(nLogn)
+//vec[i] represents smallest number ending a sequence of length i
 int lengthOfLIS(vector<int>& nums) {
     vector<int> vec;
     int n = nums.size();
@@ -87,7 +88,7 @@ int lengthOfLIS(vector<int>& nums) {
 }
 // to make it non-decreasing, change lower to upper
 
-// How to form the longest increasing subsequence?
+// How to form the longest increasing subsequence? cp algorithms
 // Tip: see longestDivisibleSubset. Its like recursive parent
 
 int main()

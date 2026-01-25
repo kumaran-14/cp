@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "cp",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "cp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cp-Debug-1bc7f615b7b0ef1d7cb3.json",
+					"name" : "cp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "lca_binary_lifting::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lca_binary_lifting-Debug-5d7689dfc26965a9cca3.json",
+					"name" : "lca_binary_lifting",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tele::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tele-Debug-b6416d197d0bf811ec25.json",
+					"name" : "tele",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "temp2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-temp2-Debug-11828ba307f16afd942c.json",
+					"name" : "temp2",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/kumaran/gdev/cp",
+		"source" : "/home/kumaran/gdev/cp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

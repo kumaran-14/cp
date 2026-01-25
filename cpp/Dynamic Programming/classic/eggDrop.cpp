@@ -60,6 +60,9 @@ int main()
     freopen("../output.txt", "w", stdout);
 #endif
 
+
+    // do leetcode egg drop: there are two better solutions 1. binary search for inner most loop, 2. lee's solution, different DP formulation
+
     cin>>tc;
     while(tc--) {
         // n eggs, k floors;

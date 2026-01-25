@@ -276,6 +276,7 @@ int main() {
     }
     return fact[N] * inv_fact[K] * inv_fact[N - K];
   };
+  fact[0].to
 
   return 0;
 }
